@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import Button from '@/components/button/button';
 import Dropdown from '@/components/dropdown';
+import { useAccount } from 'wagmi';
 import { useAllAvailableCovers } from '@/hooks/contracts/useAllAvailableCovers';
 
 type OverViewProps = {
