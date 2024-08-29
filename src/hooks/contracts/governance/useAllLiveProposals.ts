@@ -28,12 +28,3 @@ export const useAllLiveProposals = () => {
     return [];
   }
 };
-
-export const useGetVoters = () => {
-  useReadContract({
-    abi: GovContract.abi,
-    address: GovContract.address as `0x${string}`,
-    functionName: 'voters',
-    args: [],
-  })
-};

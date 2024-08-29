@@ -4,7 +4,7 @@ import { Proposals } from '@/screen/governance/components/proposals';
 import { Stake } from '@/screen/governance/components/stake';
 import { VotingPower } from '@/screen/governance/components/votingPower';
 import { ProposalType, VoterType } from '@/types/main';
-import { useAllLiveProposals, useGetVoters } from '@/hooks/contracts/governance/useAllLiveProposals';
+import { useAllLiveProposals } from '@/hooks/contracts/governance/useAllLiveProposals';
 
 export const GovernanceScreen = (): JSX.Element => {
 

@@ -41,7 +41,7 @@ export const convertTempProposalTypeData = (data: ProposalType[]): TempProposalT
     const tvl = convertTvl(Number(data[i].proposalParam.claimAmount));
     result.push({
       type: `${filters[Number(data[i].proposalParam.riskType)]?.toString()}`,
-      incentive: `${tvl} BTCP`,
+      incentive: `${tvl} BQ`,
       value: `${tvl} BTCP`
     });
   }

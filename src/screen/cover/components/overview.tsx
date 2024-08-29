@@ -2,16 +2,16 @@ import React, { useMemo, useState } from 'react';
 
 import Button from '@/components/button/button';
 import Dropdown from '@/components/dropdown';
-import { useAccount } from 'wagmi';
-import { useAllAvailableCovers } from '@/hooks/contracts/useAllAvailableCovers';
+import { useAccount } from "wagmi";
+import { useAllAvailableCovers } from "@/hooks/contracts/useAllAvailableCovers";
 
 type OverViewProps = {
   handleBuyCover: () => void;
   error: string;
-};
+}
 
 export const Overview = (props: OverViewProps): JSX.Element => {
-  const { handleBuyCover, error } = props;
+  const {handleBuyCover, error} = props;
 
   useAllAvailableCovers();
 
@@ -69,13 +69,7 @@ export const Overview = (props: OverViewProps): JSX.Element => {
         </div>
       </div>
       <div className='mb-2 mt-4 flex justify-center'>
-        <Button
-          variant='primary'
-          size='lg'
-          className='min-w-[216px]'
-          onClick={handleBuyCover}
-          disabled={!!error}
-        >
+        <Button variant='primary' size='lg' className='min-w-[216px]' onClick={handleBuyCover} disabled={!!error}>
           {error || 'Buy Cover'}
         </Button>
       </div>
