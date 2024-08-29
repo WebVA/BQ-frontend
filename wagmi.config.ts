@@ -1,7 +1,7 @@
-import { defineConfig } from '@wagmi/cli'
+// import { defineConfig } from '@wagmi/cli'
 
-export default defineConfig({
-  out: 'src/generated.ts',
-  contracts: [],
-  plugins: [],
-})
+// export default defineConfig({
+//   out: 'src/generated.ts',
+//   contracts: [],
+//   plugins: [],
+// })
