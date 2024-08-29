@@ -21,6 +21,7 @@ module.exports = {
     '@typescript-eslint/no-inferrable-types': 'off',
     'react-hooks/rules-of-hooks': 'off',
     'react/display-name': 'off',
+    'react/jsx-key': 'off',
     'react/jsx-curly-brace-presence': [
       'warn',
       { props: 'never', children: 'never' },
