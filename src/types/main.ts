@@ -96,6 +96,19 @@ export type VoterType = {
   weight: number
 };
 
+export type PoolCoverType = {
+  id: number;
+  coverName: string;
+  riskType: number;
+  chains: string;
+  capacity: number;
+  cost: number;
+  capacityAmount: number;
+  coverValues: number;
+  maxAmount: number;
+  poolId: number;
+  CID: string;
+}
 
 export enum PropsalStatus {
   Submitted, 
