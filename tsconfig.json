@@ -15,7 +15,6 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "#/*": ["./*"],
       "@/*": ["./src/*"],
       "~/*": ["./public/*"]
     },
@@ -26,7 +25,7 @@
       }
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/hooks/global.d.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"],
   "moduleResolution": ["node_modules", ".next", "node"]
 }
