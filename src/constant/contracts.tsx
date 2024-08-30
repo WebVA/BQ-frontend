@@ -11,17 +11,17 @@ export type ContractType = {
 
 export const GovContract: ContractType = {
   abi: Gov,
-  address: '0x633B9AD35da8AaB5c50807f15B543e7B4B249595',
+  address: '0x532656807B59DB53C940f984076D32fE653Db758',
 };
 
 export const ICoverContract: ContractType = {
   abi: ICoverABI,
-  address: '0x57649f0Ab7Dc200F4b17517c2A229C0B11836Eea'
+  address: '0x9689a2EAdF13DE136E7c7AC993Bb4Fc114669160'
 }
 
 export const InsurancePoolContract: ContractType = {
   abi: InsurancePool,
-  address: '0x49A1Bc11aAe5353D1dD4E3ed23971FC21CaF888F',
+  address: '0x89AE684d499bDecC283EDdc1122390C6e2355504',
 };
 
 export const MockERC20Contract: ContractType = {
