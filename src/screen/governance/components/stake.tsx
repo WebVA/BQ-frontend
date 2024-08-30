@@ -116,7 +116,7 @@ export const Stake = (): JSX.Element => {
           {isConnected ? 'Claim Now' : 'Connect Wallet'}
         </Button>
       </div>
-      <div className='justify-center mb-2 flex'>
+      <div className='mb-2 flex justify-center'>
         <Button
           variant='primary'
           size='lg'
