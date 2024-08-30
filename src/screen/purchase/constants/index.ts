@@ -1,12 +1,34 @@
 import { CoverType } from '@/screen/purchase/types';
 
 export const filters = [
-  'all cover product',
-  'Slashing',
-  'Smart contract risks',
-  'Protocol risks',
-  'Stable coin',
+  {
+    index: undefined,
+    riskType: 'all cover product'
+  },
+  {
+    index: 0,
+    riskType: 'slashing',
+  },
+  {
+    index: 1,
+    riskType: 'smart contract risks',
+  },
+  {
+    index: 2,
+    riskType: 'protocol risks'
+  },
+  {
+    index: 3,
+    riskType: 'stable coin'
+  }
 ];
+
+export const riskTypes = [
+  "Slashing",
+  "Smart Contract",
+  "Stablecoin",
+  "Protocol"
+]
 
 export const covers: CoverType[] = [
   {
