@@ -15,7 +15,7 @@ import {
 import { convertAmount, convertTvl } from '@/lib/utils';
 import { GovContract, MockERC20Contract } from '@/constant/contracts';
 import Grid from '~/svg/grid.svg';
-import { addTokenToMetaMask } from '../../../global';
+import { addTokenToMetaMask } from '@/hooks/global';
 
 export const Stake = (): JSX.Element => {
   const [amount, setAmount] = useState<string>('10');
