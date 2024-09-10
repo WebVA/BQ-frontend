@@ -20,6 +20,7 @@ module.exports = {
     '@typescript-eslint/no-inferrable-types': 'off',
     '@typescript-eslint/no-inferrable-types': 'off',
     'react-hooks/rules-of-hooks': 'off',
+    '@typescript-eslint/ban-types': 'off',
     'react/display-name': 'off',
     'react/jsx-key': 'off',
     'react/jsx-curly-brace-presence': [
