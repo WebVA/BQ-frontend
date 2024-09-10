@@ -1,5 +1,4 @@
-import { GovContract, MockERC20Contract } from '@/constant/contracts';
-import { MetaMaskInpageProvider } from '@metamask/providers';
+import { MockERC20Contract } from '@/constant/contracts';
 
 export async function addTokenToMetaMask() {
   const tokenAddress = MockERC20Contract.address; // Replace with your token contract address

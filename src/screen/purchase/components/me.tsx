@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { List } from '@/screen/purchase/components/list';
-import { useAccount } from "wagmi";
-import { useAllUserCovers } from "@/hooks/contracts/useAllUserCovers";
-import { IUserCover } from "@/types/main";
-import { MyCover } from "./myCover";
+import { useAccount } from 'wagmi';
+import { useAllUserCovers } from '@/hooks/contracts/useAllUserCovers';
+import { IUserCover } from '@/types/main';
+import { MyCover } from './myCover';
 import { useRouter } from 'next/navigation';
 
 import LeftArrowIcon from '~/svg/left-arrow.svg';
@@ -14,7 +14,7 @@ export const MyPurchaseScreen = (): JSX.Element => {
   const { address } = useAccount();
   const userCovers = useAllUserCovers(address as string);
 
-  console.log('user covers:', userCovers)
+  console.log('user covers:', userCovers);
 
   return (
     <section className='flex h-full flex-auto flex-col'>
@@ -26,7 +26,7 @@ export const MyPurchaseScreen = (): JSX.Element => {
           >
             <LeftArrowIcon className='h-[13px] w-[23px]' />
           </div>
-          <div className='text-[40px] font-bold leading-[50px]'>Buy Cover</div>
+          <div className='text-[24px] font-bold leading-[50px]'>Buy Cover</div>
         </div>
         <div className='grid w-full grid-cols-3 gap-[38px]'>
           {userCovers.map((userCover, index) => (

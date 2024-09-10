@@ -3,6 +3,7 @@ import React from 'react';
 import { useAccount, useDisconnect } from 'wagmi';
 
 import Button from '@/components/button/button';
+import PlusIcon from '~/svg/plus.svg';
 
 export const ConnectButton = (): JSX.Element => {
   const { open, close } = useWeb3Modal();
@@ -27,16 +28,21 @@ export const ConnectButton = (): JSX.Element => {
     <div>
       {isConnected && address ? (
         <Button
-          variant='gradient-outline'
-          size='xl'
-          className='bg-background-100'
+          variant='primary'
+          size='lg'
+          className='rounded-sm bg-gradient-to-r from-[#00ECBC] to-[#005746]'
           // onClick={close}
           onClick={async () => handleDisconnect()}
         >
           {truncateAddress(address)}
         </Button>
       ) : (
-        <Button variant='primary' size='xl' onClick={() => open()}>
+        <Button
+          variant='primary'
+          className='rounded-sm bg-gradient-to-r from-[#00ECBC] to-[#005746]'
+          size='lg'
+          onClick={() => open()}
+        >
           Connect Wallet
         </Button>
       )}

@@ -3,11 +3,21 @@ import React, { useEffect } from 'react';
 
 import Button from '@/components/button/button';
 
-import { ProposalDetail, TempProposalType } from '@/screen/governance/constants';
+import {
+  ProposalDetail,
+  TempProposalType,
+} from '@/screen/governance/constants';
 import { ProposalType } from '@/types/main';
 import { convertTempProposalTypeData, convertTvl } from '@/lib/utils';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
-import { useReadContracts, useWriteContract, useAccount, useBalance, useWaitForTransactionReceipt, useConnect } from 'wagmi';
+import {
+  useReadContracts,
+  useWriteContract,
+  useAccount,
+  useBalance,
+  useWaitForTransactionReceipt,
+  useConnect,
+} from 'wagmi';
 import { GovContract } from '@/constant/contracts';
 import { toast } from 'react-toastify';
 import { useUserVoted } from '@/hooks/contracts/governance/useUserVoted';
@@ -23,23 +33,20 @@ export const Proposals = ({ proposals }: CurrencyProps): JSX.Element => {
   const {
     data: hash,
     isPending,
-    writeContractAsync
+    writeContractAsync,
   } = useWriteContract({
     mutation: {
       async onSuccess(data) {
-        console.log(1)        
+        console.log(1);
       },
       onError(error) {
-        console.log(1, error)   
-      }
-    }
+        console.log(1, error);
+      },
+    },
   });
 
   const handleAcceptWriteContract = async (proposalId: number) => {
-    const params = [
-      proposalId,
-      true
-    ];
+    const params = [proposalId, true];
 
     console.log('ProposalId: ', proposalId);
     try {
@@ -48,28 +55,25 @@ export const Proposals = ({ proposals }: CurrencyProps): JSX.Element => {
         functionName: 'vote',
         args: params,
       });
-      toast.success("Accept Vote Sucess!");
+      toast.success('Accept Vote Sucess!');
     } catch (err) {
-      let errorMsg = "";
+      let errorMsg = '';
       if (err instanceof Error) {
-        if (err.message.includes("User denied transaction signature")) {
-          errorMsg = "User denied transaction signature";
+        if (err.message.includes('User denied transaction signature')) {
+          errorMsg = 'User denied transaction signature';
         } else {
-          errorMsg = "Already voted";
+          errorMsg = 'Already voted';
         }
       } else {
-        errorMsg = "Unexpected error";
+        errorMsg = 'Unexpected error';
       }
 
       toast.error(errorMsg);
     }
-  }
+  };
 
   const handleDeclineWriteContract = async (proposalId: number) => {
-    const params = [
-      proposalId,
-      false
-    ];
+    const params = [proposalId, false];
 
     console.log('ProposalId: ', proposalId);
     try {
@@ -77,57 +81,65 @@ export const Proposals = ({ proposals }: CurrencyProps): JSX.Element => {
         ...GovContract,
         functionName: 'vote',
         args: params,
-      });  
-      toast.success("Decline Vote Sucess!");
+      });
+      toast.success('Decline Vote Sucess!');
     } catch (err) {
-      let errorMsg = "";
+      let errorMsg = '';
       if (err instanceof Error) {
-        if (err.message.includes("User denied transaction signature")) {
-          errorMsg = "User denied transaction signature";
+        if (err.message.includes('User denied transaction signature')) {
+          errorMsg = 'User denied transaction signature';
         } else {
-          errorMsg = "Already voted";
+          errorMsg = 'Already voted';
         }
       } else {
-        errorMsg = "Unexpected error";
+        errorMsg = 'Unexpected error';
       }
       toast.error(errorMsg);
     }
-  }
+  };
 
   return (
     <div className='flex w-full flex-col gap-6'>
-      {convertTempProposalTypeData(proposals ? proposals : []).map((proposal, index) => (
-        <div
-          key={index}
-          className='bg-background-100 flex w-full gap-5 rounded-[15px] p-4'
-        >
-          {Object.keys(proposal).map((key, i) => (
-            <div key={i} className='flex w-full flex-col items-center gap-6'>
-              <div className='border-border-200 w-full rounded-full border px-5 py-3 text-center'>
-                {ProposalDetail[key as keyof typeof ProposalDetail]}
-              </div>
-              <div className='font-semibold'>
-                {key === 'incentive' && (
-                  <div>100 BQ</div>
-                )}
-                {key !== 'incentive' && proposal[key as keyof typeof proposal]}
-              </div>
-            </div>
-          ))}
-          <div className='flex w-full flex-col gap-[13px]'>
-            <Button variant='primary' size='lg' className='w-full' onClick={() => handleAcceptWriteContract(index+1)}>
-              Accept
-            </Button>
-            <Button
-              variant='gradient-outline'
-              size='lg'
-              className='bg-background-100 w-full'
-              onClick={() => handleDeclineWriteContract(index+1)}
+      {convertTempProposalTypeData(proposals ? proposals : []).map(
+        (proposal, index) => (
+          <div className='flex flex-col'>
+            <div
+              key={index}
+              className='flex w-full gap-5 rounded bg-[#1E1E1E] px-11 py-[26px]'
             >
-              Decline
-            </Button>
-          </div>
-          {/* <div className='flex w-full items-end justify-center gap-6'>
+              {Object.keys(proposal).map((key, i) => (
+                <div
+                  key={i}
+                  className='flex w-full flex-col items-center gap-6'
+                >
+                  <div className='w-full justify-center rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'>
+                    {ProposalDetail[key as keyof typeof ProposalDetail]}
+                  </div>
+                  <div className='font-semibold'>
+                    {key === 'incentive' && <div>100 BQ</div>}
+                    {key !== 'incentive' &&
+                      proposal[key as keyof typeof proposal]}
+                  </div>
+                </div>
+              ))}
+              <div className='flex w-full flex-col gap-[13px]'>
+                <Button
+                  variant='primary'
+                  size='lg'
+                  className='w-full min-w-[183px] rounded bg-gradient-to-r from-[#00ECBC] to-[#005746] px-5 py-3 text-center'
+                  onClick={() => handleAcceptWriteContract(index + 1)}
+                >
+                  Accept
+                </Button>
+                <Button
+                  size='lg'
+                  className='w-full rounded border border-white bg-transparent'
+                  onClick={() => handleDeclineWriteContract(index + 1)}
+                >
+                  Decline
+                </Button>
+              </div>
+              {/* <div className='flex w-full items-end justify-center gap-6'>
             <Link
               href='/'
               className='font-semibold underline underline-offset-4'
@@ -135,8 +147,15 @@ export const Proposals = ({ proposals }: CurrencyProps): JSX.Element => {
               Details
             </Link>
           </div> */}
-        </div>
-      ))}
+            </div>
+            <div className='px-[15px]'>
+              <div className='flex items-center justify-center rounded-b bg-gradient-to-r from-[#3D3D3D] to-[#303030] p-2'>
+                More Details
+              </div>
+            </div>
+          </div>
+        )
+      )}
     </div>
   );
 };

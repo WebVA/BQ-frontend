@@ -38,7 +38,7 @@ const MenuItem = ({ label, href, subMenus }: MenuType) => {
     <div className={cn('group relative')}>
       <div
         className={cn(
-          'font-primary relative flex cursor-pointer items-center gap-2 px-4 text-[16px] leading-[20px]',
+          'font-primary relative flex cursor-pointer items-center gap-2 px-4 text-[16px] leading-[90px]',
           isSelected
             ? 'from-primary-200 to-primary-100 bg-gradient-to-t bg-clip-text pb-2 text-transparent'
             : 'text-light group-hover:from-primary-200 group-hover:to-primary-100 py-1 group-hover:bg-gradient-to-t group-hover:bg-clip-text group-hover:text-transparent',

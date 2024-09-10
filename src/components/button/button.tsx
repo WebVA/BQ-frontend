@@ -69,7 +69,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           'relative',
           'transition-all',
-          'active:scale-95',
+          'active:scale-100',
           variant === 'gradient-outline' &&
           'overflow-hidden rounded-full p-[1px]'
         )}
@@ -82,7 +82,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           type='button'
           disabled={disabled}
           className={cn(
-            'box-border inline-flex items-center rounded-full flex items-center',
+            'box-border inline-flex items-center flex items-center',
             'focus-visible:ring-primary-100 focus:outline-none focus-visible:ring',
             'transition-all',
             'justify-center text-center',

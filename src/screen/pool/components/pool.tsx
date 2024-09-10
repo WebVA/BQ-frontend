@@ -6,6 +6,7 @@ import { StakeType } from '@/screen/stake/constants';
 import { PieChart } from 'react-minimal-pie-chart';
 import { usePoolCovers } from '@/hooks/contracts/pool/usePoolCovers';
 import { cn, convertPoolCoversData } from '@/lib/utils';
+import ChartSVG from '~/svg/chart.svg';
 
 export const PoolScreen = ({
   currency,
@@ -36,48 +37,51 @@ export const PoolScreen = ({
   // console.log("pool is ", pool);
   return (
     <section className='flex h-full flex-auto flex-col'>
-      <div className='layout flex flex-auto flex-col items-center gap-10 p-10 pt-12'>
-        <div className='flex w-full gap-10'>
+      <div className='layout flex flex-auto gap-10 p-10 pt-12'>
+        <div className='flex w-full flex-col gap-10'>
           <Detail pool={pool} />
           <Currency pool={pool} />
         </div>
-        <div className='flex w-full flex-col'>
-          <div className='text-[40px] font-bold leading-[50px]'>
-            Risk Covered
+        <div className='flex h-auto w-full flex-col gap-4 rounded-sm bg-[#1E1E1E] p-[15px]'>
+          <div className='flex items-center gap-[22px]'>
+            <div className='w-fit min-w-[200px] text-[30px] font-bold'>
+              Risk Covered:
+            </div>
+            <div className='h-[1px] flex-1 bg-white/50'></div>
           </div>
 
           <div className='flex w-full items-center justify-center'>
-            <div className='flex items-center gap-6'>
-              <PieChart
-                data={data}
-                animate
-                animationDuration={2000}
-                animationEasing='ease-out'
-                radius={42}
-                lineWidth={60}
-                label={({ dataEntry }) =>
-                  `${dataEntry.value}%`
-                }
-                labelStyle={{
-                  fontSize: '5px',
-                  fontFamily: 'sans-serif',
-                  fill: '#fff',
-                }}
-                labelPosition={70}
-              />
-              <div className='flex min-w-[420px] flex-col gap-2'>
-
-                {data.map((key, i) => (
-                  <div className='flex items-center justify-between'>
-                    <div
-                      className={cn(
-                        'text-2xl',
-                        `text-[${data[i].color}]`
-                      )}>
-                      {data[i].title}</div>
-                    <div className='text-2xl font-bold'>{data[i].value}%</div>
-                  </div>
-                ))}
+            <div className='flex w-full flex-col items-center gap-6'>
+              <div className='p-10'>
+                <PieChart
+                  data={data}
+                  animate
+                  animationDuration={2000}
+                  animationEasing='ease-out'
+                  radius={42}
+                  lineWidth={60}
+                  label={({ dataEntry }) => `${dataEntry.value}%`}
+                  labelStyle={{
+                    fontSize: '5px',
+                    fontFamily: 'sans-serif',
+                    fill: '#fff',
+                  }}
+                  labelPosition={70}
+                />
+              </div>
+              <div className='relative flex w-full flex-col gap-4 rounded border border-white/10 bg-[#373737] px-12 py-[34px]'>
+                <div className='grid w-full grid-cols-2 justify-between gap-[50px]'>
+                  {data.map((key, i) => (
+                    <div className='relative flex flex-col items-start pl-8 text-[20px]'>
+                      <div
+                        className='absolute left-0 top-1/2 h-[15px] w-[15px] -translate-y-1/2 rounded'
+                        style={{ background: data[i].color }}
+                      ></div>
+                      <div>{data[i].title}</div>
+                      <div className='font-bold'>{data[i].value}%</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

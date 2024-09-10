@@ -18,6 +18,7 @@ import {
 } from '@/screen/stake/constants';
 import { MockERC20Contract } from '@/constant/contracts';
 import { useAllInsurancePools } from '@/hooks/contracts/pool/useAllInsurancePools';
+import DepositModal from './deposit';
 
 export type InsurancePoolType = {
   poolName: string;
@@ -74,7 +75,7 @@ export const StakeScreen = (): JSX.Element => {
           {myStacks.map((stack, index) => (
             <div
               key={index}
-              className='bg-background-100 flex w-full gap-5 rounded-[15px] p-4'
+              className='flex w-full gap-5 rounded-[5px] bg-[#1E1E1E] p-4'
             >
               {Object.keys(stack).map((key, i) => (
                 <div
@@ -86,8 +87,7 @@ export const StakeScreen = (): JSX.Element => {
                 >
                   <div
                     className={cn(
-                      'w-full rounded-full px-5 py-3 text-center',
-                      'bg-[#0699D8]'
+                      'w-full rounded-sm px-5 py-3 text-center outline outline-1 outline-gray-600'
                     )}
                   >
                     {MyStackDetail[key as keyof typeof MyStackDetail]}
@@ -98,20 +98,19 @@ export const StakeScreen = (): JSX.Element => {
                 </div>
               ))}
               <div className='flex w-full flex-col items-center gap-6'>
-                <div className='w-full rounded-full bg-gradient-to-t from-teal-400 to-blue-500 px-5 py-3 text-center hover:from-pink-500 hover:to-orange-500'>
+                <DepositModal
+                  index={index + 1}
+                  currency={stack.currency}
+                  onStake={() => handleWriteContract(1, '100', 1)}
+                />
+                <div className='w-full rounded-sm bg-white px-5 py-3 text-center'>
                   <Link
                     href={`/pool/${stack.currency}/${index + 1}`}
-                    className='font-semibold underline-offset-4'
+                    className='font-semibold text-[black]'
                   >
-                    Stake Now
+                    Details
                   </Link>
                 </div>
-                <Link
-                  href={`/pool/${stack.currency}/${index + 1}`}
-                  className='font-semibold underline underline-offset-4'
-                >
-                  Details
-                </Link>
               </div>
             </div>
           ))}
@@ -121,7 +120,11 @@ export const StakeScreen = (): JSX.Element => {
             <div className='text-2xl font-semibold'>
               Looking for custom solutions for your business
             </div>
-            <Button variant='gradient-outline' size='lg'>
+            <Button
+              variant='primary'
+              size='lg'
+              className='rounded-[10px] bg-none text-[#00ECBC] outline outline-[#00ECBC]'
+            >
               Reach out to us
             </Button>
           </div>
