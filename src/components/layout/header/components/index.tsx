@@ -9,8 +9,8 @@ import NextImage from '@/components/NextImage';
 
 const Header = (): JSX.Element => {
   return (
-    <nav className='sticky top-0 z-50'>
-      <div className='border-border-100 from-background-100 flex h-[100px] w-full items-center justify-between gap-0 border-b bg-gradient-to-br to-transparent px-[100px]'>
+    <nav className='sticky top-0 z-[999999999999999]'>
+      <div className='border-border-100 from-background-100 flex h-[100px] w-full items-center justify-between gap-0 border-b bg-gradient-to-br to-[#0C0C0C] px-[100px]'>
         <Link href='/'>
           <NextImage
             useSkeleton
@@ -21,7 +21,7 @@ const Header = (): JSX.Element => {
           />
         </Link>
         <div className='flex h-full items-center justify-end gap-12'>
-          <div className='flex flex-auto'>
+          <div className='flex h-full flex-auto'>
             <Menu />
           </div>
           <div>

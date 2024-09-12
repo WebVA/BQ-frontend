@@ -1,3 +1,4 @@
+import { transform } from 'next/dist/build/swc';
 import type { Config } from 'tailwindcss';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
@@ -49,10 +50,15 @@ export default {
             backgroundPosition: '700px 0',
           },
         },
+        loading: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
       },
       animation: {
         flicker: 'flicker 3s linear infinite',
         shimmer: 'shimmer 1.3s linear infinite',
+        'loading-line': 'loading 1.5s linear infinite',
       },
     },
   },

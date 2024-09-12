@@ -71,7 +71,7 @@ export const MyCover = (props: CoverProps): JSX.Element => {
           className='min-w-[216px] rounded-sm bg-gradient-to-r from-[#00ECBC] to-[#005746]'
           onClick={handleLinkDetail}
         >
-          Claim Cover
+          Buy Cover
         </Button>
       </div>
     </div>

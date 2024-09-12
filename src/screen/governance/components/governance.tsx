@@ -8,6 +8,7 @@ import { Proposals } from '@/screen/governance/components/proposals';
 import { SwitchProposal } from '@/screen/governance/components/SwitchProposal';
 
 import { ProposalType } from '@/types/main';
+import LightIcon from '~/svg/light.svg';
 
 export const GovernanceScreen = (): JSX.Element => {
   const liveProposals = useAllLiveProposals();
@@ -24,9 +25,14 @@ export const GovernanceScreen = (): JSX.Element => {
           <div className='text-[22px] font-normal'>
             Vote for Claim proposal and earn BQ Tokens.
           </div>
-          <Button variant='gradient-outline' size='lg' className='w-[250px]'>
-            Claim Now
-          </Button>
+          <div className='border-primary-200 relative flex h-[46px] w-[256px] items-center justify-center rounded-lg border bg-[#0C0C0C] [box-shadow:0px_4px_9px_#00ECBC]'>
+            <div className='absolute inset-x-2 top-1'>
+              <LightIcon />
+            </div>
+            <div className='text-primary-200 text-[15px] font-semibold'>
+              Claim Now
+            </div>
+          </div>
           <div className='mt-10 h-[1px] w-[200px] bg-white/50'></div>
           <div className='flex w-full justify-between gap-[90px]'>
             <SwitchProposal

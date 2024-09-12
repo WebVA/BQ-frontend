@@ -166,23 +166,10 @@
 	},
 	{
 		"inputs": [],
-		"name": "ICoverContract",
-		"outputs": [
-			{
-				"internalType": "contract ICover",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
 		"name": "coverContract",
 		"outputs": [
 			{
-				"internalType": "address",
+				"internalType": "contract ICover",
 				"name": "",
 				"type": "address"
 			}
@@ -330,19 +317,6 @@
 				"internalType": "struct Governance.Proposal[]",
 				"name": "",
 				"type": "tuple[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getProposalCount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -640,19 +614,6 @@
 			}
 		],
 		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "proposalId",
-				"type": "uint256"
-			}
-		],
-		"name": "updateProposalStatusToClaimed",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

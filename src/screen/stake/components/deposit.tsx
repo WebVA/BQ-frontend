@@ -2,9 +2,10 @@
 
 import React, { useCallback, useState } from 'react';
 
-import Input from '@/components/input';
-import Modal from '@/components/modal';
 import { cn } from '@/lib/utils';
+
+import Button from '@/components/button/button';
+import Modal from '@/components/modal';
 
 const DepositModal = ({
   index,
@@ -24,11 +25,14 @@ const DepositModal = ({
 
   return (
     <>
-      <div
-        className='w-full cursor-pointer rounded-sm bg-gradient-to-r from-[#00ECBC] to-[#005746] px-5 py-3 text-center'
-        onClick={() => setIsOpen(true)}
-      >
-        <div className='font-semibold underline-offset-4'>Stake Now</div>
+      <div className='h-full w-full'>
+        <Button
+          variant='gradient'
+          className='h-10 w-full px-5 py-[11px]'
+          onClick={() => setIsOpen(true)}
+        >
+          Stake Now
+        </Button>
       </div>
       <Modal maxWidth='lg' isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
         <div className='flex min-h-[398px] w-full flex-col items-center rounded bg-gradient-to-r from-[#1E1E1E] to-[#1E1E1E] p-3'>

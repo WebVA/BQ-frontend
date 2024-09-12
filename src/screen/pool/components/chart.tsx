@@ -30,19 +30,26 @@ export const data1: any[] = [
   {
     x: 'Merlin',
     y: 551500,
-    r: Browser.isDevice ? '120' : '120',
+    r: Browser.isDevice ? '125' : '125',
     text: 'Merlin',
   },
 ];
 const PieRadius = () => {
+  const palettes = ['#B09FFF', '#007ADF', '#00ECBC', '#373737'];
+
   return (
     <div className='control-pane relative'>
       <div className='absolute left-1/2 top-1/2 z-10 flex h-[180px] w-[180px] -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white'>
-        <div className='broder-[#00ECBC] absolute inset-2 rounded-full border-4'></div>
-        <div className='flex flex-col items-center justify-center text-black'>
-          <div className='text-3xl font-bold'>WBTC</div>
-          <div className='text-3xl font-bold'>50</div>
-          <div>Total</div>
+        <div className='absolute inset-2'>
+          <div className='h-full w-full rounded-full bg-gradient-to-br from-transparent via-[#00ECBC]/30 to-transparent p-[6px]'>
+            <div className='flex h-full w-full items-center justify-center rounded-full bg-white'>
+              <div className='flex flex-col items-center justify-center text-black'>
+                <div className='text-3xl font-bold'>WBTC</div>
+                <div className='text-3xl font-bold'>50</div>
+                <div>Total</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className='control-section'>
@@ -82,6 +89,7 @@ const PieRadius = () => {
                 connectorStyle: { length: '20px', type: 'Curve' },
               }}
               radius='r'
+              palettes={palettes}
             />
           </AccumulationSeriesCollectionDirective>
         </AccumulationChartComponent>

@@ -68,7 +68,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <div
         className={cn(
-          'relative',
+          'relative flex',
           'transition-all',
           'active:scale-100',
           variant === 'gradient-outline' && 'overflow-hidden rounded p-[1px]'

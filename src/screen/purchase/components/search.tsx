@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import Button from '@/components/button/button';
+import { cn } from '@/lib/utils';
+
 import Input from '@/components/input';
 
 import { filters } from '@/screen/purchase/constants';
 
-import FilterIcon from '~/svg/filter.svg';
-import SearchIcon from '~/svg/search.svg';
 import { RiskType } from '@/types/main';
+
+import SearchIcon from '~/svg/search.svg';
+import SettingIcon from '~/svg/setting.svg';
 
 type SearchType = {
   searchKeyword: string;
@@ -17,39 +19,71 @@ type SearchType = {
 };
 
 export const Search: React.FC<SearchType> = ({
-  filterCategory,
+  filterCategory = 0,
   setFilterCategory,
   searchKeyword,
   setSearchKeyword,
 }): JSX.Element => {
   return (
     <div className='flex w-full flex-col gap-6'>
-      <Input
-        className='rounded-sm bg-black pl-6'
-        leftIcon={<SearchIcon className='h-5 w-5' />}
-        // rightIcon={
-        //   <Button className='w-full ' size='xs'>
-        //     <FilterIcon className='h-7 w-6' />
-        //   </Button>
-        // }
-        placeholder='Search Covers'
-        value={searchKeyword}
-        onChange={(e) => {
-          setSearchKeyword(e.target.value);
-        }}
-      />
-      <div className='grid w-full grid-cols-5 gap-x-5 bg-[#1E1E1E] p-1 text-center'>
-        {filters.map((filter, index) => (
-          <Button
-            key={index}
-            variant={filterCategory === filter.index ? 'default' : 'outline'}
-            size='lg'
-            className='w-full rounded-sm border-none p-4 capitalize'
-            onClick={() => setFilterCategory(filter.index)}
-          >
-            {filter.riskType}
-          </Button>
-        ))}
+      <div className='flex items-center gap-2'>
+        <Input
+          className='rounded border border-[#6D6D6D] bg-transparent px-4 py-3'
+          leftIcon={<SearchIcon className='h-5 w-5' />}
+          placeholder='Search Covers'
+          value={searchKeyword}
+          onChange={(e) => {
+            setSearchKeyword(e.target.value);
+          }}
+        />
+        <div className='flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-[#6D6D6D]'>
+          <SettingIcon className='h-6 w-6' />
+        </div>
+      </div>
+      <div className='flex w-full cursor-pointer items-center rounded border border-white/10 bg-white/5 p-[3px]'>
+        <div className='relative flex w-full cursor-pointer flex-col items-center rounded md:flex-row md:gap-0'>
+          {filters.map((opt, index) => (
+            <div
+              key={index}
+              className={cn(
+                'z-10 w-full py-3 text-center text-sm font-medium capitalize transition-all',
+                filterCategory === index ? 'text-white' : 'text-white/50 '
+              )}
+              onClick={() => setFilterCategory(index)}
+            >
+              <div
+                className={cn(
+                  'flex justify-center border-r',
+                  filterCategory !== index &&
+                    filterCategory - 1 !== index &&
+                    filters.length - 1 !== index
+                    ? 'border-white/10 '
+                    : 'border-transparent'
+                )}
+              >
+                {opt.riskType}
+              </div>
+            </div>
+          ))}
+          <div
+            className={cn(
+              'absolute inset-y-0 hidden rounded bg-white/15 transition-all md:block'
+            )}
+            style={{
+              width: `${100 / filters.length}%`,
+              transform: `translateX(${filterCategory * 100}%)`,
+            }}
+          />
+          <div
+            className={cn(
+              'absolute inset-x-0 rounded bg-white/15 transition-all md:hidden'
+            )}
+            style={{
+              height: `${100 / filters.length}%`,
+              transform: `translateY(${filterCategory * 100}%)`,
+            }}
+          />
+        </div>
       </div>
     </div>
   );

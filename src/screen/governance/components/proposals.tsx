@@ -1,26 +1,17 @@
-import Link from 'next/link';
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useAccount, useBalance, useWriteContract } from 'wagmi';
+
+import { cn, convertTempProposalTypeData } from '@/lib/utils';
 
 import Button from '@/components/button/button';
+import CustomDatePicker from '@/components/DatePicker';
 
-import {
-  ProposalDetail,
-  TempProposalType,
-} from '@/screen/governance/constants';
-import { ProposalType } from '@/types/main';
-import { convertTempProposalTypeData, convertTvl } from '@/lib/utils';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
-import {
-  useReadContracts,
-  useWriteContract,
-  useAccount,
-  useBalance,
-  useWaitForTransactionReceipt,
-  useConnect,
-} from 'wagmi';
 import { GovContract } from '@/constant/contracts';
-import { toast } from 'react-toastify';
-import { useUserVoted } from '@/hooks/contracts/governance/useUserVoted';
+import { ProposalDetail } from '@/screen/governance/constants';
+
+import { ProposalType } from '@/types/main';
+import DownIcon from '~/svg/chav-down.svg';
 
 type CurrencyProps = {
   proposals: ProposalType[] | undefined;
@@ -29,6 +20,9 @@ type CurrencyProps = {
 export const Proposals = ({ proposals }: CurrencyProps): JSX.Element => {
   const { address, isConnected } = useAccount();
   const { data: balance } = useBalance({ address });
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [lossEventDate, setLossEventDate] = useState<Date>(new Date());
 
   const {
     data: hash,
@@ -149,8 +143,62 @@ export const Proposals = ({ proposals }: CurrencyProps): JSX.Element => {
           </div> */}
             </div>
             <div className='px-[15px]'>
-              <div className='flex items-center justify-center rounded-b bg-gradient-to-r from-[#3D3D3D] to-[#303030] p-2'>
-                More Details
+              <div className='flex flex-col items-center justify-center gap-5 rounded-b bg-gradient-to-r from-[#3D3D3D] to-[#303030] p-2'>
+                {isOpen && (
+                  <div className='flex flex-col gap-5 pt-[30px]'>
+                    <div className='flex gap-10'>
+                      <div className='flex w-full flex-col gap-1'>
+                        <div>Loss Event Date</div>
+                        <div className='relative w-full rounded border border-white/5 bg-white/10 px-5 py-2'>
+                          <CustomDatePicker
+                            selectedDate={lossEventDate}
+                            handleDateChange={(e) => e && setLossEventDate(e)}
+                          />
+                        </div>
+                      </div>
+                      <div className='relative flex w-full flex-col gap-1'>
+                        <div>Claim Value</div>
+                        <div className='relative flex w-full rounded border border-white/5 bg-white/10 px-5 py-2'>
+                          <input
+                            className='flex-1 border-none bg-transparent p-0 focus:border-none focus:outline-none focus:outline-offset-0 focus:ring-0'
+                            placeholder='Type here...'
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className='flex w-full gap-10'>
+                      <div className='relative flex w-full flex-col gap-1'>
+                        <div>Slashing Tnx Hash</div>
+                        <div className='relative w-full rounded border border-white/5 bg-white/10 px-5 py-2'>
+                          <input
+                            className='border-none bg-transparent p-0 focus:border-none focus:outline-none focus:outline-offset-0 focus:ring-0'
+                            placeholder='Type here...'
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className='relative flex w-full flex-col gap-1'>
+                      <div>Description</div>
+                      <div className='relative w-full rounded border border-white/5 bg-white/10 px-5 py-2'>
+                        <input
+                          className='border-none bg-transparent p-0 focus:border-none focus:outline-none focus:outline-offset-0 focus:ring-0'
+                          placeholder='Type here...'
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div className='flex w-full items-center justify-center gap-2'>
+                  <div
+                    className='cursor-pointer'
+                    onClick={() => setIsOpen(!isOpen)}
+                  >
+                    More Details
+                  </div>
+                  <DownIcon
+                    className={cn('h-[5px] w-[10px]', isOpen && 'rotate-180')}
+                  />
+                </div>
               </div>
             </div>
           </div>

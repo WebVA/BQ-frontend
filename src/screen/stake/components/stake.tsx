@@ -1,6 +1,11 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { cn, convertStakeTypeData, convertTvl } from '@/lib/utils';
+import {
+  cn,
+  convertAmount,
+  convertStakeTypeData,
+  convertTvl,
+} from '@/lib/utils';
 import Button from '@/components/button/button';
 import LeftArrowIcon from '~/svg/left-arrow.svg';
 
@@ -10,15 +15,18 @@ import {
   useAccount,
   useWriteContract,
   useWaitForTransactionReceipt,
+  useBalance,
 } from 'wagmi';
 import {
   MyStackDetail,
   tempMyStacks,
   StakeType,
 } from '@/screen/stake/constants';
-import { MockERC20Contract } from '@/constant/contracts';
+import { InsurancePoolContract, MockERC20Contract } from '@/constant/contracts';
 import { useAllInsurancePools } from '@/hooks/contracts/pool/useAllInsurancePools';
 import DepositModal from './deposit';
+import { parseUnits } from 'viem';
+import { toast } from 'react-toastify';
 
 export type InsurancePoolType = {
   poolName: string;
@@ -34,24 +42,55 @@ export const StakeScreen = (): JSX.Element => {
   const chainId = useChainId();
 
   const { address, isConnected } = useAccount();
+  const [amount, setAmount] = useState<string>('1');
+
+  const { data: balance } = useBalance({ address });
 
   const [myStacks, setMyStacks] = useState<StakeType[]>([]);
 
   const insurancePools = useAllInsurancePools();
-  const { data: hash, isPending, writeContract } = useWriteContract();
 
-  const handleWriteContract = (
-    poolId: number,
-    amount: string,
-    day: number
-  ): void => {
-    console.log('wallet address is: ', `${address}`);
+  const {
+    data: hash,
+    isPending,
+    writeContractAsync,
+  } = useWriteContract({
+    mutation: {
+      async onSuccess(data) {
+        console.log(1);
+      },
+      onError(error) {
+        console.log(1, error);
+      },
+    },
+  });
 
-    writeContract({
-      ...MockERC20Contract,
-      functionName: 'approve',
-      args: [`${address}`, BigInt(amount)],
-    });
+  const handleDepositContract = async (poolId: Number, day: String) => {
+    console.log('Deposit is ', InsurancePoolContract, poolId, day);
+    const realAmount = convertAmount(amount);
+    const params = [Number(poolId), Number(day)];
+
+    console.log('params ', params);
+    console.log('Balance: ', balance, 'AMOUNT: ', realAmount);
+
+    try {
+      const tx = await writeContractAsync({
+        abi: InsurancePoolContract.abi,
+        address: InsurancePoolContract.address as `0x${string}`,
+        functionName: 'deposit',
+        args: params,
+        value: parseUnits(amount.toString(), 18),
+      });
+      toast.success('Deposit Success!');
+    } catch (err) {
+      let errorMsg = '';
+      if (err instanceof Error) {
+        if (err.message.includes('User denied transaction signature')) {
+          errorMsg = 'User denied transaction signature';
+        }
+      }
+      toast.error(errorMsg);
+    }
   };
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
@@ -71,11 +110,11 @@ export const StakeScreen = (): JSX.Element => {
         <div className='text-[40px] font-bold leading-[50px]'>
           Stake Idle Assets To Secure And Earn
         </div>
-        <div className='flex w-full flex-col gap-6'>
+        <div className='flex w-full flex-col gap-5'>
           {myStacks.map((stack, index) => (
             <div
               key={index}
-              className='flex w-full gap-5 rounded-[5px] bg-[#1E1E1E] p-4'
+              className='flex w-full gap-[30px] rounded bg-[#1E1E1E] px-[60px] py-[25px]'
             >
               {Object.keys(stack).map((key, i) => (
                 <div
@@ -87,7 +126,7 @@ export const StakeScreen = (): JSX.Element => {
                 >
                   <div
                     className={cn(
-                      'w-full rounded-sm px-5 py-3 text-center outline outline-1 outline-gray-600'
+                      'flex h-10 w-full items-center justify-center rounded border border-white/10 bg-white/5 px-5 text-sm'
                     )}
                   >
                     {MyStackDetail[key as keyof typeof MyStackDetail]}
@@ -97,13 +136,14 @@ export const StakeScreen = (): JSX.Element => {
                   </div>
                 </div>
               ))}
-              <div className='flex w-full flex-col items-center gap-6'>
+              <div className='flex w-full flex-col items-center gap-[15px]'>
                 <DepositModal
                   index={index + 1}
                   currency={stack.currency}
-                  onStake={() => handleWriteContract(1, '100', 1)}
+                  onStake={() => handleDepositContract(index + 1, stack.tenure)}
                 />
-                <div className='w-full rounded-sm bg-white px-5 py-3 text-center'>
+                {stack.tenure}
+                <div className='flex h-10 w-full items-center justify-center rounded bg-white px-5 py-[11px]'>
                   <Link
                     href={`/pool/${stack.currency}/${index + 1}`}
                     className='font-semibold text-[black]'
@@ -129,10 +169,10 @@ export const StakeScreen = (): JSX.Element => {
             </Button>
           </div>
           <div className='flex items-center gap-8'>
-            <div className='bg-background-100 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full hover:bg-white/30 active:scale-95'>
+            <div className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-full border border-white bg-transparent hover:bg-white/30 active:scale-95'>
               <LeftArrowIcon className='h-[13px] w-[23px]' />
             </div>
-            <div className='bg-background-100 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full hover:bg-white/30 active:scale-95'>
+            <div className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-full border border-white bg-transparent hover:bg-white/30 active:scale-95'>
               <LeftArrowIcon className='h-[13px] w-[23px] rotate-180' />
             </div>
           </div>

@@ -26,7 +26,7 @@ export const MyPurchaseScreen = (): JSX.Element => {
           >
             <LeftArrowIcon className='h-[13px] w-[23px]' />
           </div>
-          <div className='text-[24px] font-bold leading-[50px]'>Buy Cover</div>
+          <div className='text-[24px] font-bold leading-[50px]'>My Cover</div>
         </div>
         <div className='grid w-full grid-cols-3 gap-[38px]'>
           {userCovers.map((userCover, index) => (

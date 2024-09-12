@@ -9,7 +9,7 @@ import DiscordIcon from '~/svg/discord.svg';
 import LayersIcon from '~/svg/layers.svg';
 import RightArrowIcon from '~/svg/right-arrow.svg';
 
-export const Code = (): JSX.Element => {
+export const Code = ({ onConfirm }: { onConfirm: () => void }): JSX.Element => {
   const router = useRouter();
   const [code, setCode] = useState<string>();
   const [isError, setIsError] = useState<boolean>(false);
@@ -17,11 +17,11 @@ export const Code = (): JSX.Element => {
   const handleConfirm = useCallback(() => {
     if (code === process.env.NEXT_PUBLIC_PASS_CODE) {
       localStorage.setItem('bq-code', 'true');
-      router.replace('/');
+      onConfirm();
     } else {
       setIsError(true);
     }
-  }, [code, router]);
+  }, [code, onConfirm]);
 
   useEffect(() => {
     if (!code) setIsError(false);
