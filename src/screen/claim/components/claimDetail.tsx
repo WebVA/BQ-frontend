@@ -178,6 +178,10 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
             handleSlashingTxChange={handleSlashingTxChange}
             handleDescriptionChange={handleDescriptionChange}
             handleSubmitClaim={handleSubmitClaim}
+            status={0}
+            setStatus={function (value: React.SetStateAction<number>): void {
+              throw new Error('Function not implemented.');
+            }}
           />
           <Status status={proposal?.status} />
         </div>
