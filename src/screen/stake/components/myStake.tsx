@@ -1,34 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { cn, convertMyStakeTypeData, convertTvl } from '@/lib/utils';
-import Button from '@/components/button/button';
-
-import LeftArrowIcon from '~/svg/left-arrow.svg';
-
+import { toast } from 'react-toastify';
 import {
-  useChainId,
   useAccount,
-  useWriteContract,
+  useChainId,
   useWaitForTransactionReceipt,
+  useWriteContract,
 } from 'wagmi';
-import {
-  MyStackDetail,
-  tempMyStacks,
-  MyStakeType,
-} from '@/screen/stake/constants';
-import { InsurancePoolContract, ICoverContract } from '@/constant/contracts';
-import { MockERC20Contract } from '@/constant/contracts';
+
+import { cn, convertMyStakeTypeData } from '@/lib/utils';
 import { useAllInsurancePoolsByAddress } from '@/hooks/contracts/pool/useAllInsurancePoolsByAddress';
 import { useGetUserDeposit } from '@/hooks/contracts/pool/useGetUserDeposit';
+
+import Button from '@/components/button/button';
+
+import { ICoverContract, InsurancePoolContract } from '@/constant/contracts';
+import { MyStackDetail, MyStakeType } from '@/screen/stake/constants';
+
 import { InsurancePoolType } from '@/types/main';
 
-import { toast } from 'react-toastify';
+import LeftArrowIcon from '~/svg/left-arrow.svg';
 
 export const MyStakeScreen = (): JSX.Element => {
   const chainId = useChainId();
   const { address, isConnected } = useAccount();
   const [myStacks, setMyStacks] = useState<MyStakeType[]>([]);
   const pools = useAllInsurancePoolsByAddress(`${address}`);
-  const deposits = useGetUserDeposit(4, `${address}`);
 
   const {
     data: hash,
@@ -104,9 +100,8 @@ export const MyStakeScreen = (): JSX.Element => {
     });
 
   useEffect(() => {
-    if (pools) {
+    if (pools.length > 0) {
       setMyStacks(convertMyStakeTypeData(pools as InsurancePoolType[]));
-      console.log(myStacks);
     }
   }, [pools]);
 
@@ -116,149 +111,91 @@ export const MyStakeScreen = (): JSX.Element => {
         <div className='text-[40px] font-bold leading-[50px]'>
           Active Stake Positions
         </div>
-        <div className='flex w-full flex-col gap-6'>
-          <div className='flex min-w-[630px] flex-1 flex-col gap-20 rounded-sm bg-[#1E1E1E] p-[15px]'>
-            <div className='relative flex flex-col gap-[46px] rounded border border-white/10 bg-[#373737] px-24 py-11'>
-              <div className='flex items-center justify-between'>
-                <div className='flex gap-5'>
-                  <div className='flex flex-col items-center gap-[17px]'>
-                    <div className='w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'>
-                      Pool Rating
-                    </div>
-                    <div className='text-[22px] font-bold'>AAA</div>
-                  </div>
-                  <div className='flex flex-col items-center gap-[17px]'>
-                    <div className='w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'>
-                      Pool Rating
-                    </div>
-                    <div className='text-[22px] font-bold'>AAA</div>
-                  </div>
-                </div>
-                <Button
-                  variant='primary'
-                  size='lg'
-                  className='rounded-sm bg-gradient-to-r from-[#00ECBC] to-[#005746]'
-                >
-                  Claim Yield
-                </Button>
-              </div>
-              <div className='h-[1px] w-full bg-white'></div>
-              <div className='flex items-center justify-between'>
-                <div className='flex gap-5'>
-                  <div className='flex flex-col items-center gap-[17px]'>
-                    <div className='w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'>
-                      Pool Rating
-                    </div>
-                    <div className='text-[22px] font-bold'>AAA</div>
-                  </div>
-                  <div className='flex flex-col items-center gap-[17px]'>
-                    <div className='w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'>
-                      Pool Rating
-                    </div>
-                    <div className='text-[22px] font-bold'>AAA</div>
-                  </div>
-                </div>
-                <Button
-                  variant='primary'
-                  size='lg'
-                  className='rounded-sm bg-gradient-to-r from-[#00ECBC] to-[#005746]'
-                >
-                  Claim Yield
-                </Button>
-              </div>
-            </div>
-          </div>
+        <div className='flex min-h-[400px] w-full flex-col gap-6'>
           {myStacks?.map((stack, index) => (
             <div
               key={index}
-              className='relative flex flex-col gap-4 rounded border border-white/10 bg-[#373737] px-24 py-11'
+              className='flex min-w-[630px] flex-1 flex-col gap-20 rounded-sm bg-[#1E1E1E] p-[15px]'
             >
-              <div className='flex w-2/4 flex-col px-16 py-6'>
-                <div className='flex'>
-                  {Object.keys(stack).map((key, i) => (
-                    <div
-                      key={i}
-                      className={cn(
-                        `flex w-full flex-row items-center justify-center gap-6 ${
-                          i > 1 ? 'hidden' : ''
-                        }`,
-                        (key === 'poolId' ||
-                          key === 'tvl' ||
-                          key == 'currency') &&
-                          'hidden'
-                      )}
-                    >
-                      {i < 2 && (
-                        <div className='w-11/12 gap-x-1'>
-                          <div
-                            className={cn(
-                              `w-full rounded-full px-5 py-3 text-center `,
-                              'bg-[#0699D8]'
-                            )}
-                          >
-                            {MyStackDetail[key as keyof typeof MyStackDetail]}
+              <div className='relative flex flex-col gap-[46px] rounded border border-white/10 bg-[#373737] px-24 py-11'>
+                <div className='flex items-center justify-between'>
+                  <div className='flex gap-5'>
+                    {Object.keys(stack).map((key, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          `flex flex-col items-center gap-[17px] ${
+                            i > 1 ? 'hidden' : ''
+                          }`,
+                          (key === 'poolId' ||
+                            key === 'tvl' ||
+                            key == 'currency') &&
+                            'hidden'
+                        )}
+                      >
+                        {i < 2 && (
+                          <div className='w-11/12 gap-x-1'>
+                            <div
+                              className={cn(
+                                'w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'
+                              )}
+                            >
+                              {MyStackDetail[key as keyof typeof MyStackDetail]}
+                            </div>
+                            <div className='text-[22px] font-bold'>
+                              {stack[key as keyof typeof stack]}
+                            </div>
                           </div>
-                          <div className='my-5 text-center font-semibold'>
-                            {stack[key as keyof typeof stack]}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-                <div className='flex justify-center'>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                   <Button
-                    variant='gradient-outline'
-                    className='bg-background-100 w-full'
+                    variant='primary'
                     size='lg'
+                    className='min-w-[230px] rounded-sm bg-gradient-to-r from-[#00ECBC] to-[#005746]'
                     onClick={() => handleClaimWriteContract(index + 1)}
                   >
                     Claim Yield
                   </Button>
                 </div>
-              </div>
-              <div className='relative flex w-px items-end justify-center border-[0.5px] border-gray-700'>
-                <div className='absolute h-1.5 w-1.5 rotate-45 bg-gray-700'></div>
-              </div>
-              <div className='flex w-2/4 flex-col px-16 py-6'>
-                <div className='flex'>
-                  {Object.keys(stack).map((key, i) => (
-                    <div
-                      key={i}
-                      className={cn(
-                        `flex w-full flex-col items-center gap-6 ${
-                          i < 2 ? 'hidden' : ''
-                        }`,
-                        (key === 'poolId' ||
-                          key === 'tvl' ||
-                          key == 'currency') &&
-                          'hidden'
-                      )}
-                    >
-                      {i > 1 && (
-                        <div className='w-11/12 gap-x-1'>
-                          <div
-                            className={cn(
-                              'w-full rounded-full px-5 py-3 text-center',
-                              'bg-[#0699D8]'
-                            )}
-                          >
-                            {MyStackDetail[key as keyof typeof MyStackDetail]}
+                <div className='h-[1px] w-full bg-white/30'></div>
+                <div className='flex items-center justify-between'>
+                  <div className='flex gap-5'>
+                    {Object.keys(stack).map((key, i) => (
+                      <div
+                        key={i}
+                        className={cn(
+                          `flex flex-col items-center gap-[17px] ${
+                            i < 2 ? 'hidden' : ''
+                          }`,
+                          (key === 'poolId' ||
+                            key === 'tvl' ||
+                            key == 'currency') &&
+                            'hidden'
+                        )}
+                      >
+                        {i > 1 && (
+                          <div className='w-11/12 gap-x-1'>
+                            <div
+                              className={cn(
+                                'w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'
+                              )}
+                            >
+                              {MyStackDetail[key as keyof typeof MyStackDetail]}
+                            </div>
+                            <div className='text-[22px] font-bold'>
+                              {stack[key as keyof typeof stack]}
+                            </div>
                           </div>
-                          <div className='my-5 text-center font-semibold'>
-                            {stack[key as keyof typeof stack]}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                <div className='flex justify-center'>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                   <Button
-                    variant='gradient-outline'
-                    className='bg-background-100 w-full'
+                    variant='primary'
                     size='lg'
+                    className='min-w-[230px] rounded-sm bg-gradient-to-r from-[#007ADF] to-[#003F74]'
                     onClick={() => handleWriteContract(index + 1)}
                   >
                     Withdraw Stake

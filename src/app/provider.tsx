@@ -1,15 +1,19 @@
-'use client'
+'use client';
 
-import * as React from 'react'
-import { WagmiProvider } from 'wagmi'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { CoverProvider } from "@/contexts/CoverContext"
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
-import { ClaimProvider } from "@/contexts/ClaimContext"
-import { metadata, projectId } from '@/lib/wagmi';
-import { config } from "@/lib/config"
+import * as React from 'react';
+import { WagmiProvider } from 'wagmi';
 
-const queryClient = new QueryClient()
+import { config } from '@/lib/config';
+import { metadata, projectId } from '@/lib/wagmi';
+
+import WithSession from '@/components/withSession';
+
+import { ClaimProvider } from '@/contexts/ClaimContext';
+import { CoverProvider } from '@/contexts/CoverContext';
+
+const queryClient = new QueryClient();
 
 if (!projectId) throw new Error('Project ID is not defined');
 
@@ -21,9 +25,9 @@ createWeb3Modal({
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
 });
 
-export function Providers({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = React.useState(false)
-  React.useEffect(() => setMounted(true), [])
+function Providers({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
   return (
     <WagmiProvider config={config}>
       <CoverProvider>
@@ -34,5 +38,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         </ClaimProvider>
       </CoverProvider>
     </WagmiProvider>
-  )
+  );
 }
+
+export default WithSession(Providers);

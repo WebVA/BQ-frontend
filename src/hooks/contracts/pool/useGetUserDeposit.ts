@@ -1,22 +1,22 @@
 import { useEffect } from 'react';
-import {useBlockNumber, useReadContract} from 'wagmi';
-import { InsurancePoolContract } from "@/constant/contracts";
-import { InsurancePoolType } from "@/types/main";
+import { useBlockNumber, useReadContract } from 'wagmi';
+import { InsurancePoolContract } from '@/constant/contracts';
+import { InsurancePoolType } from '@/types/main';
 
-export const useGetUserDeposit = (poolId:Number, address: string) => {
-  const {data: blockNumber} = useBlockNumber({watch: true});
-  const {data: insurancePools, refetch} = useReadContract({
+export const useGetUserDeposit = (poolId: number, address: string) => {
+  const { data: blockNumber } = useBlockNumber({ watch: true });
+  const { data: insurancePools, refetch } = useReadContract({
     abi: InsurancePoolContract.abi,
     address: InsurancePoolContract.address as `0x${string}`,
     functionName: 'getUserDeposit',
     args: [poolId, address],
-  })
+  });
 
   useEffect(() => {
     refetch();
-  }, [blockNumber]);
+  }, [blockNumber, refetch]);
 
-//   console.log("insurancePools", insurancePools);
+  //   console.log("insurancePools", insurancePools);
   if (!insurancePools) return [];
 
   try {
@@ -24,8 +24,6 @@ export const useGetUserDeposit = (poolId:Number, address: string) => {
     if (!result) return [];
 
     return result;
-
-
   } catch (error) {
     return [];
   }

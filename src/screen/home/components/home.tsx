@@ -41,7 +41,7 @@ export const HomeScreen = (): JSX.Element => {
             {isConnected ? 'Disconnect' : 'Connect Wallet'}
           </Button>
         </div>
-        <div className='flex gap-9'>
+        <div className='mt-12 flex gap-9'>
           <div className='relative'>
             <div className='h-[345px] w-[388px] overflow-hidden rounded-t-[8px]  border-[1px] border-b-[0px] border-white/30 bg-gradient-to-br from-[#494949] to-[#494949]/10 px-12 py-6'>
               <div className='flex justify-center'>

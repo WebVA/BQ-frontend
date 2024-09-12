@@ -9,14 +9,14 @@ import { bnToNumber, numberToBN } from '@/lib/formulat';
 import { useAllUserCovers } from '@/hooks/contracts/useAllUserCovers';
 import { useProposalByCoverId } from '@/hooks/contracts/useProposalByCover';
 
-import { Switch } from '@/components/switch';
-
 import { GovContract } from '@/constant/contracts';
 import { Covers } from '@/screen/claim/components/covers';
 import { Requirement } from '@/screen/claim/components/requirement';
 import { Status } from '@/screen/claim/components/status';
 
 import { IUserCover } from '@/types/main';
+
+import LeftArrowIcon from '~/svg/left-arrow.svg';
 
 type ClaimScreenType = {
   coverId?: string | null;
@@ -28,8 +28,6 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
   const router = useRouter();
   const [currentCover, setCurrentCover] = useState<IUserCover>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [status, setStatus] = useState<number>(0);
-  const [selectedTab, setSelectedTab] = useState<number>(0);
 
   const currentCoverId = useMemo(() => {
     return currentCover?.coverId ? Number(currentCover?.coverId) : 0;
@@ -92,7 +90,6 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
 
   const handleSubmitClaim = async () => {
     setIsLoading(true);
-    setStatus(0);
     const params = {
       user: address,
       riskType: 0, // riskType
@@ -111,7 +108,6 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
         args: [params],
       });
 
-      setStatus(1);
       toast.success('Proposal submitted!');
     } catch (err) {
       let errorMsg = '';
@@ -125,7 +121,6 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
         errorMsg = 'Unexpected error';
       }
 
-      setStatus(2);
       toast.error(errorMsg);
     }
 
@@ -157,42 +152,34 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
 
   return (
     <section className='flex h-full flex-auto flex-col'>
-      <div className='mx-auto w-full max-w-[1000px] py-[54px]'>
-        <div className='my-[55px] text-center text-[50px] font-bold'>
-          My Covers
+      <div className='layout flex flex-auto flex-col items-center gap-10 p-10 pt-12'>
+        <div className='flex w-full items-center justify-start gap-6'>
+          <div
+            className='bg-background-100 flex h-[60px] w-[60px] cursor-pointer items-center justify-center rounded-full hover:bg-white/30 active:scale-95'
+            onClick={() => router.push('/purchase/me')}
+          >
+            <LeftArrowIcon className='h-[13px] w-[23px]' />
+          </div>
+          <div className='text-[40px] font-bold leading-[50px]'>Claim</div>
         </div>
-        <Switch
-          value={selectedTab}
-          setValue={setSelectedTab}
-          options={[
-            'Babylon Slashing',
-            'Palladium Stablecoin',
-            'Stacking DAO Smart Contract',
-          ]}
-        />
-
-        <Requirement
-          isLoading={isLoading}
-          lossEventDate={lossEventDate}
-          claimValueStr={claimValueStr}
-          slashingTx={slashingTx}
-          description={description}
-          maxClaimable={maxClaimableNum}
-          error={error}
-          isSlashing={isSlashing}
-          status={status}
-          setStatus={setStatus}
-          handleLossEventDateChange={handleLossEventDateChange}
-          handleClaimValueChange={handleClaimValueChange}
-          handleSlashingTxChange={handleSlashingTxChange}
-          handleDescriptionChange={handleDescriptionChange}
-          handleSubmitClaim={handleSubmitClaim}
-        />
-
-        <Status status={proposal?.status} />
-
-        <div className='hidden'>
-          <Covers products={products} />
+        <Covers products={products} />
+        <div className='flex w-full'>
+          <Requirement
+            isLoading={isLoading}
+            lossEventDate={lossEventDate}
+            claimValueStr={claimValueStr}
+            slashingTx={slashingTx}
+            description={description}
+            maxClaimable={maxClaimableNum}
+            error={error}
+            isSlashing={isSlashing}
+            handleLossEventDateChange={handleLossEventDateChange}
+            handleClaimValueChange={handleClaimValueChange}
+            handleSlashingTxChange={handleSlashingTxChange}
+            handleDescriptionChange={handleDescriptionChange}
+            handleSubmitClaim={handleSubmitClaim}
+          />
+          <Status status={proposal?.status} />
         </div>
       </div>
     </section>

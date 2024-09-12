@@ -10,7 +10,7 @@ import NextImage from '@/components/NextImage';
 const Header = (): JSX.Element => {
   return (
     <nav className='sticky top-0 z-50'>
-      <div className='border-border-100 bg-background-100 flex h-[100px] w-full items-center justify-between gap-0 border-b px-[100px]'>
+      <div className='border-border-100 from-background-100 flex h-[100px] w-full items-center justify-between gap-0 border-b bg-gradient-to-br to-transparent px-[100px]'>
         <Link href='/'>
           <NextImage
             useSkeleton
@@ -20,8 +20,8 @@ const Header = (): JSX.Element => {
             alt='logo'
           />
         </Link>
-        <div className='flex items-center justify-end gap-12'>
-          <div className='flex-auto'>
+        <div className='flex h-full items-center justify-end gap-12'>
+          <div className='flex flex-auto'>
             <Menu />
           </div>
           <div>

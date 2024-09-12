@@ -3,11 +3,12 @@ import React from 'react';
 import { useAccount, useDisconnect } from 'wagmi';
 
 import Button from '@/components/button/button';
+
 import PlusIcon from '~/svg/plus.svg';
 
 export const ConnectButton = (): JSX.Element => {
-  const { open, close } = useWeb3Modal();
-  const { address, isConnecting, isConnected, isDisconnected } = useAccount();
+  const { open } = useWeb3Modal();
+  const { address, isConnected } = useAccount();
   const { disconnectAsync } = useDisconnect();
 
   const handleDisconnect = async () => {
@@ -28,18 +29,20 @@ export const ConnectButton = (): JSX.Element => {
     <div>
       {isConnected && address ? (
         <Button
-          variant='primary'
+          variant='gradient'
           size='lg'
-          className='rounded-sm bg-gradient-to-r from-[#00ECBC] to-[#005746]'
-          // onClick={close}
           onClick={async () => handleDisconnect()}
         >
           {truncateAddress(address)}
         </Button>
       ) : (
         <Button
-          variant='primary'
-          className='rounded-sm bg-gradient-to-r from-[#00ECBC] to-[#005746]'
+          variant='gradient'
+          leftIcon={<PlusIcon />}
+          classNames={{
+            leftIcon:
+              'w-[18px] h-[18px] bg-white rounded-full flex items-center justify-center',
+          }}
           size='lg'
           onClick={() => open()}
         >

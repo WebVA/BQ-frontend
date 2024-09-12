@@ -1,12 +1,13 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { PieChart } from 'react-minimal-pie-chart';
+
+import { convertPoolCoversData } from '@/lib/utils';
+import { usePoolCovers } from '@/hooks/contracts/pool/usePoolCovers';
 
 import { Currency } from '@/screen/pool/components/currency';
 import { Detail } from '@/screen/pool/components/detail';
 import { StakeType } from '@/screen/stake/constants';
-import { PieChart } from 'react-minimal-pie-chart';
-import { usePoolCovers } from '@/hooks/contracts/pool/usePoolCovers';
-import { cn, convertPoolCoversData } from '@/lib/utils';
-import ChartSVG from '~/svg/chart.svg';
+import PieRadius from './chart';
 
 export const PoolScreen = ({
   currency,
@@ -53,21 +54,7 @@ export const PoolScreen = ({
           <div className='flex w-full items-center justify-center'>
             <div className='flex w-full flex-col items-center gap-6'>
               <div className='p-10'>
-                <PieChart
-                  data={data}
-                  animate
-                  animationDuration={2000}
-                  animationEasing='ease-out'
-                  radius={42}
-                  lineWidth={60}
-                  label={({ dataEntry }) => `${dataEntry.value}%`}
-                  labelStyle={{
-                    fontSize: '5px',
-                    fontFamily: 'sans-serif',
-                    fill: '#fff',
-                  }}
-                  labelPosition={70}
-                />
+                <PieRadius />
               </div>
               <div className='relative flex w-full flex-col gap-4 rounded border border-white/10 bg-[#373737] px-12 py-[34px]'>
                 <div className='grid w-full grid-cols-2 justify-between gap-[50px]'>

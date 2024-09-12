@@ -13,7 +13,7 @@ const pieChartColors = [
   '#00a2c4',
   '#0096d6',
   '#00b1e6',
-  '#0089d6'
+  '#0089d6',
 ];
 
 /** Merge classes with tailwind-merge with clsx full feature */
@@ -23,14 +23,16 @@ export function cn(...inputs: ClassValue[]) {
 
 export const convertTvl = (amount: number) => {
   return amount / 10 ** 18;
-}
+};
 
 export const convertAmount = (amount: string): string => {
-  const num = Number(amount) * (10 ** 8);
+  const num = Number(amount) * 10 ** 8;
   return num.toString() + '0000000000';
-}
+};
 
-export const convertStakeTypeData = (data: InsurancePoolType[]): StakeType[] => {
+export const convertStakeTypeData = (
+  data: InsurancePoolType[]
+): StakeType[] => {
   const result: StakeType[] = [];
   for (let i = 0; i < data.length; i++) {
     const tvl = convertTvl(Number(data[i].tvl));
@@ -40,27 +42,31 @@ export const convertStakeTypeData = (data: InsurancePoolType[]): StakeType[] => 
       currency: 'BTCP',
       tenure: `${data[i].minPeriod} days`,
       poolId: (i + 1).toString(),
-      tvl: tvl.toString()
+      tvl: tvl.toString(),
     });
   }
   return result;
-}
+};
 
-export const convertTempProposalTypeData = (data: ProposalType[]): TempProposalType[] => {
+export const convertTempProposalTypeData = (
+  data: ProposalType[]
+): TempProposalType[] => {
   const result: any[] = [];
   for (let i = 0; i < data.length; i++) {
     const tvl = convertTvl(Number(data[i].proposalParam.claimAmount));
     result.push({
       type: `${riskTypes[Number(data[i].proposalParam.riskType)]?.toString()}`,
       incentive: `${tvl} BQ`,
-      value: `${tvl} BTCP`
+      value: `${tvl} BTCP`,
     });
   }
   return result;
-}
+};
 
-export const convertMyStakeTypeData = (data: InsurancePoolType[]): MyStakeType[] => {
-  console.log("mystakes size is", data, data.length);
+export const convertMyStakeTypeData = (
+  data: InsurancePoolType[]
+): MyStakeType[] => {
+  console.log('mystakes size is', data, data.length);
   const result: MyStakeType[] = [];
   for (let i = 0; i < data.length; i++) {
     const tvl = convertTvl(Number(data[i].tvl));
@@ -71,11 +77,11 @@ export const convertMyStakeTypeData = (data: InsurancePoolType[]): MyStakeType[]
       tenure: `${data[i].minPeriod} days`,
       claim: `${tvl} BTCP`,
       poolId: (i + 1).toString(),
-      tvl: tvl.toString()
+      tvl: tvl.toString(),
     });
   }
   return result;
-}
+};
 
 export const convertPoolCoversData = (data: PoolCoverType[]): any[] => {
   const result: any[] = [];
@@ -83,8 +89,8 @@ export const convertPoolCoversData = (data: PoolCoverType[]): any[] => {
     result.push({
       title: data[i].coverName,
       value: Number(data[i].capacity),
-      color: pieChartColors[i]
+      color: pieChartColors[i],
     });
   }
   return result;
-}
+};

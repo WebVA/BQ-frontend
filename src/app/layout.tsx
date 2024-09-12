@@ -1,17 +1,16 @@
 import { Metadata } from 'next';
 import * as React from 'react';
+import { ToastContainer } from 'react-toastify';
 
 import '@/styles/globals.css';
 import '@/styles/colors.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Footer from '@/components/layout/footer/components';
 import Header from '@/components/layout/header/components';
 
+import Providers from '@/app/provider';
 import { siteConfig } from '@/constant/config';
-import { Providers } from '@/app/provider';
-
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
