@@ -124,29 +124,29 @@ export const MyStakeScreen = (): JSX.Element => {
                       <div
                         key={i}
                         className={cn(
-                          `flex flex-col items-center gap-[17px] ${
-                            i > 1 ? 'hidden' : ''
-                          }`,
+                          `flex flex-col items-center gap-[17px]`,
                           (key === 'poolId' ||
                             key === 'tvl' ||
-                            key == 'currency') &&
+                            key === 'claim' ||
+                            key === 'apy' ||
+                            key === 'depositAmount' ||
+                            key === 'tenure' ||
+                            key === 'currency') &&
                             'hidden'
                         )}
                       >
-                        {i < 2 && (
-                          <div className='w-11/12 gap-x-1'>
-                            <div
-                              className={cn(
-                                'w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'
-                              )}
-                            >
-                              {MyStackDetail[key as keyof typeof MyStackDetail]}
-                            </div>
-                            <div className='text-[22px] font-bold'>
-                              {stack[key as keyof typeof stack]}
-                            </div>
+                        <div className='w-[200px] gap-x-1'>
+                          <div
+                            className={cn(
+                              'w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'
+                            )}
+                          >
+                            {MyStackDetail[key as keyof typeof MyStackDetail]}
                           </div>
-                        )}
+                          <div className='text-center text-[22px] font-bold'>
+                            {stack[key as keyof typeof stack]}
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -166,29 +166,29 @@ export const MyStakeScreen = (): JSX.Element => {
                       <div
                         key={i}
                         className={cn(
-                          `flex flex-col items-center gap-[17px] ${
-                            i < 2 ? 'hidden' : ''
-                          }`,
+                          `flex flex-col items-center gap-[17px]`,
                           (key === 'poolId' ||
                             key === 'tvl' ||
-                            key == 'currency') &&
+                            key === 'claim' ||
+                            key === 'apy' ||
+                            key === 'rating' ||
+                            key === 'dailyPayout' ||
+                            key === 'currency') &&
                             'hidden'
                         )}
                       >
-                        {i > 1 && (
-                          <div className='w-11/12 gap-x-1'>
-                            <div
-                              className={cn(
-                                'w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'
-                              )}
-                            >
-                              {MyStackDetail[key as keyof typeof MyStackDetail]}
-                            </div>
-                            <div className='text-[22px] font-bold'>
-                              {stack[key as keyof typeof stack]}
-                            </div>
+                        <div className='w-[200px] gap-x-1'>
+                          <div
+                            className={cn(
+                              'w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'
+                            )}
+                          >
+                            {MyStackDetail[key as keyof typeof MyStackDetail]}
                           </div>
-                        )}
+                          <div className='text-center text-[22px] font-bold'>
+                            {stack[key as keyof typeof stack]}
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>

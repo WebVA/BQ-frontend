@@ -14,8 +14,6 @@ export const useAllAvailableCovers = () => {
     args: [],
   })
 
-  console.log('raw available:', availableCovers)
-
   // useEffect(() => {
   //   refetch();
   // }, [blockNumber]);

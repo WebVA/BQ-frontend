@@ -15,8 +15,6 @@ export const useAllProposals = () => {
     args: [],
   })
 
-  console.log('all proposals:', proposals)
-
   useEffect(() => {
     refetch();
   }, [blockNumber]);

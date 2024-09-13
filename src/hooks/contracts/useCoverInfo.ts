@@ -29,8 +29,6 @@ export const useCoverInfo = (coverId: number) => {
     args: [coverId],
   })
 
-  console.log('raw cover info:', userCover)
-
   useEffect(() => {
     refetch();
   }, [blockNumber]);

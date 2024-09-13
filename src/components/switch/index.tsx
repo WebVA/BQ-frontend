@@ -4,10 +4,10 @@ import React, { Dispatch } from 'react';
 type Props = {
   options: string[];
   value?: number;
-  setValue?: Dispatch<number>;
+  handleSwitch?: Dispatch<number>;
 };
 
-export const Switch = ({ options, value = 0, setValue }: Props) => {
+export const Switch = ({ options, value = 0, handleSwitch }: Props) => {
   return (
     <div className='bg-background-300 flex w-full cursor-pointer items-center rounded-[10px] p-1'>
       <div className='relative flex w-full cursor-pointer flex-col items-center rounded-lg md:flex-row md:gap-0'>
@@ -18,7 +18,7 @@ export const Switch = ({ options, value = 0, setValue }: Props) => {
               'z-10 w-full py-3 text-center text-base capitalize transition-all',
               value === index ? 'text-background-400' : 'text-background-500 '
             )}
-            onClick={() => setValue && setValue(index)}
+            onClick={() => handleSwitch && handleSwitch(index)}
           >
             {opt}
           </div>

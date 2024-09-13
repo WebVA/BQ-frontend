@@ -43,8 +43,6 @@ export const CoverScreen = ({ id }: { id: number }): JSX.Element => {
   });
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  console.log('cover fee:', coverFee, coverAmount, coverPeriod);
-
   const maxCoverAmount = useMemo(() => {
     if (!balanceData) return 0;
     return parseFloat(bnToNumber(balanceData.value));
@@ -69,12 +67,6 @@ export const CoverScreen = ({ id }: { id: number }): JSX.Element => {
       coverPeriod,
     ];
 
-    console.log(
-      'param:',
-      params,
-      'value:',
-      parseUnits(coverFee.toString(), 18)
-    );
 
     try {
       await writeContract(config, {

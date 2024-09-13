@@ -16,7 +16,7 @@ export const useAllInsurancePoolsByAddress = (address: string) => {
     refetch();
   }, [blockNumber]);
 
-  console.log('insurancePools', insurancePools);
+  console.log('insurancePools: ', insurancePools);
   if (!insurancePools) return [];
 
   try {

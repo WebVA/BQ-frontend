@@ -50,7 +50,7 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
         foundMatch = true;
       }
       return {
-        name: cover?.coverName,
+        name: cover?.coverName || '',
         coverId: cover?.coverId ? Number(cover?.coverId) : '',
         isSelected: isSelected,
       };
@@ -178,6 +178,7 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
             handleSlashingTxChange={handleSlashingTxChange}
             handleDescriptionChange={handleDescriptionChange}
             handleSubmitClaim={handleSubmitClaim}
+            handleClaimProposalFunds={() => {}}
             status={0}
             setStatus={function (value: React.SetStateAction<number>): void {
               throw new Error('Function not implemented.');

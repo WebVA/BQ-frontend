@@ -12,15 +12,15 @@ export const useProposalByCoverId = (coverId?: string) => {
     args: [], // Modify this if your contract function requires arguments
   });
 
-  console.log('all proposals:', proposals)
-
-  const [filteredProposals, setFilteredProposals] = useState<ProposalType>();
+  const [filteredProposals, setFilteredProposals] = useState<ProposalType | undefined>(undefined);
 
   useEffect(() => {
     if (proposals) {
       const result = proposals as ProposalType[];
-      if (coverId !== undefined) {
-        const filtered = result.find(proposal => Number(proposal.proposalParam.coverId).toString() === coverId);
+      if (coverId) {
+        const filtered = result.find(proposal => {
+          return Number(proposal.proposalParam.coverId).toString() === coverId;
+        });
         setFilteredProposals(filtered);
       } else {
         // If coverId is undefined, return all proposals
@@ -30,8 +30,10 @@ export const useProposalByCoverId = (coverId?: string) => {
   }, [proposals, coverId]);
 
   useEffect(() => {
-    refetch();
-  }, [blockNumber, coverId]);
+    if (blockNumber) {
+      refetch();
+    }
+  }, [blockNumber]); // Only refetch when blockNumber changes
 
   return filteredProposals;
 };

@@ -14,7 +14,7 @@ export const VotingPower = ({
     <div className='flex w-full flex-col'>
       <Switch
         value={selectedType}
-        setValue={(e) => onSelectProposalType(e)}
+        handleSwitch={(e) => onSelectProposalType(e)}
         options={['Live Proposals', 'Past Proposals']}
       />
     </div>

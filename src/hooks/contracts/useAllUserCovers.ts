@@ -14,8 +14,6 @@ export const useAllUserCovers = (address: string) => {
     args: [address],
   })
 
-  console.log('raw user:', userCovers)
-
   useEffect(() => {
     refetch();
   }, [blockNumber]);

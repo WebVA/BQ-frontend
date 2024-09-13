@@ -16,7 +16,8 @@ import { Covers } from '@/screen/claim/components/covers';
 import { Requirement } from '@/screen/claim/components/requirement';
 import { Status } from '@/screen/claim/components/status';
 
-import { IUserCover } from '@/types/main';
+import { IProduct, IUserCover } from '@/types/main';
+import Button from '@/components/button/button';
 
 type ClaimScreenType = {
   coverId?: string | null;
@@ -37,11 +38,9 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
 
   const proposal = useProposalByCoverId(currentCoverId.toString());
 
-  console.log('current proposal', proposal);
-
   const userCovers = useAllUserCovers(address as string);
 
-  const products = useMemo(() => {
+  const products = useMemo<IProduct[]>(() => {
     let foundMatch = false;
 
     const updatedProducts = userCovers.map((cover, index) => {
@@ -52,7 +51,7 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
         foundMatch = true;
       }
       return {
-        name: cover?.coverName,
+        name: cover?.coverName || '',
         coverId: cover?.coverId ? Number(cover?.coverId) : '',
         isSelected: isSelected,
       };
@@ -141,7 +140,6 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
   const handleClaimValueChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log('value:');
     setClaimValueStr(event.target.value);
   };
 
@@ -155,6 +153,53 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
     setDescription(event.target.value);
   };
 
+  const handleSwitchTab = (index: number) => {
+    // console.log('product:', products[index])
+    router.push(`/claim/?coverId=${products[index].coverId}`)
+    setSelectedTab(index)
+  }
+
+  const handleClaimProposalFunds = () => {
+
+  }
+
+  if (products.length === 0) {
+    return (
+      <section className='flex h-full flex-auto flex-col'>
+        <div className='mx-auto w-full max-w-[1000px] py-[54px]'>
+          <div className='mt-[55px] text-center text-[50px] font-bold'>
+            My Covers
+          </div>
+          <div className='mt-[14px] text-center text-[30px]'>
+            No Active Cover
+          </div>
+          <div className="flex items-center justify-center gap-[20px] my-[54px]">
+            <Button
+              variant='gradient'
+              className="min-w-[180px]"
+              isLoading={isLoading}
+              size='lg'
+              onClick={() => handleSubmitClaim()}
+              disabled={!!error}
+            >
+              Buy Covers
+            </Button>
+            <Button
+              variant='outline'
+              className="min-w-[180px]"
+              isLoading={isLoading}
+              size='lg'
+              onClick={() => handleSubmitClaim()}
+              disabled={!!error}
+            >
+              Contact Us
+            </Button>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section className='flex h-full flex-auto flex-col'>
       <div className='mx-auto w-full max-w-[1000px] py-[54px]'>
@@ -163,12 +208,8 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
         </div>
         <Switch
           value={selectedTab}
-          setValue={setSelectedTab}
-          options={[
-            'Babylon Slashing',
-            'Palladium Stablecoin',
-            'Stacking DAO Smart Contract',
-          ]}
+          handleSwitch={handleSwitchTab}
+          options={products.map((product) => product.name)}
         />
 
         <Requirement
@@ -180,13 +221,14 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
           maxClaimable={maxClaimableNum}
           error={error}
           isSlashing={isSlashing}
-          status={status}
+          status={proposal?.status}
           setStatus={setStatus}
           handleLossEventDateChange={handleLossEventDateChange}
           handleClaimValueChange={handleClaimValueChange}
           handleSlashingTxChange={handleSlashingTxChange}
           handleDescriptionChange={handleDescriptionChange}
           handleSubmitClaim={handleSubmitClaim}
+          handleClaimProposalFunds={handleClaimProposalFunds}
         />
 
         <Status status={proposal?.status} />

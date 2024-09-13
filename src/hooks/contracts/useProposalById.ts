@@ -27,8 +27,6 @@ export const useProposalById = (proposalId: number) => {
     args: [proposalId],
   })
 
-  console.log('raw proposal info:', proposal)
-
   useEffect(() => {
     refetch();
   }, [blockNumber]);

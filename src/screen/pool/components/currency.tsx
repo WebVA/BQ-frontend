@@ -13,13 +13,14 @@ import { cn, convertAmount } from '@/lib/utils';
 
 import { InsurancePoolContract } from '@/constant/contracts';
 import { StakeType } from '@/screen/stake/constants';
+import Button from '@/components/button/button';
 
 type CurrencyProps = {
   pool: StakeType | undefined;
 };
 
 export const Currency = ({ pool }: CurrencyProps): JSX.Element => {
-  const [amount, setAmount] = useState<string>('1');
+  const [amount, setAmount] = useState<string>('');
   const [period, setPeriod] = useState<number>(30);
   const { open, close } = useWeb3Modal();
 
@@ -41,15 +42,10 @@ export const Currency = ({ pool }: CurrencyProps): JSX.Element => {
     },
   });
 
-  const handleDepositContract = async (poolId: string, day: number) => {
-    console.log(
-      'Deposit is ',
-      InsurancePoolContract,
-      BigInt(poolId),
-      BigInt(day.toString())
-    );
+  const handleDepositContract = async (poolId: string) => {
+    console.log('Deposit is ', InsurancePoolContract, BigInt(poolId));
     const realAmount = convertAmount(amount);
-    const params = [Number(poolId), Number(day)];
+    const params = [Number(poolId)];
 
     console.log('params ', params);
     console.log('Balance: ', balance, 'AMOUNT: ', realAmount);
@@ -106,19 +102,17 @@ export const Currency = ({ pool }: CurrencyProps): JSX.Element => {
         </div>
       </div>
       <div className='flex justify-center py-[27px]'>
-        <div
+        <Button
+          variant='gradient'
           className='w-fit min-w-[183px] rounded bg-gradient-to-r from-[#00ECBC] to-[#005746] px-5 py-3 text-center'
           onClick={async () =>
             isConnected
-              ? await handleDepositContract(
-                  pool?.poolId ? pool?.poolId : '1',
-                  period
-                )
+              ? await handleDepositContract(pool?.poolId ? pool?.poolId : '1')
               : open()
           }
         >
           {isConnected ? 'Deposit BTCP' : 'Connect Wallet'}
-        </div>
+        </Button>
       </div>
     </div>
   );

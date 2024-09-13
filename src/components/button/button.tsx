@@ -106,7 +106,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             ],
             [
               variant === 'primary' && [
-                'text-light from-primary-200 to-primary-100 bg-gradient-to-t',
+                'text-light from-gray-200 to-gray-100 bg-gradient-to-t',
               ],
               variant === 'gradient-outline' && ['bg-dark relative z-10'],
               variant === 'gradient' && [
@@ -121,7 +121,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             ],
             'disabled:cursor-not-allowed',
             isLoading &&
-              'relative opacity-[0.7] transition-none disabled:cursor-wait',
+            'relative opacity-[0.7] transition-none disabled:cursor-wait',
             className
           )}
           {...rest}

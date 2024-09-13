@@ -2,26 +2,68 @@
 
 import React, { useCallback, useState } from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn, convertAmount } from '@/lib/utils';
 
 import Button from '@/components/button/button';
 import Modal from '@/components/modal';
+import { useAccount, useBalance, useWriteContract } from 'wagmi';
+import { InsurancePoolContract } from '@/constant/contracts';
+import { toast } from 'react-toastify';
+import { parseUnits } from 'viem';
 
 const DepositModal = ({
   index,
   currency,
-  onStake,
 }: {
   index: number;
   currency: string;
-  onStake: (id: number, amount: string, day: number) => void;
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [amount, setAmount] = useState<string>('');
+  const { address, isConnected } = useAccount();
+  const { data: balanceData } = useBalance({
+    address: address as `0x${string}`,
+    unit: 'ether',
+  });
 
-  const handleStake = useCallback(() => {
-    onStake(index, amount, 10);
-  }, [amount, index, onStake]);
+  const { data: hash, writeContractAsync } = useWriteContract({
+    mutation: {
+      async onSuccess() {
+        console.log(1);
+      },
+      onError(error) {
+        console.log(1, error);
+      },
+    },
+  });
+
+  const handleDepositContract = async (poolId: Number, amount: string) => {
+    console.log('Deposit is ', InsurancePoolContract, poolId);
+    const realAmount = convertAmount(amount);
+    // const period = day.match(/\d+/);
+    const params = [poolId];
+
+    console.log('params ', params);
+
+    try {
+      const tx = await writeContractAsync({
+        abi: InsurancePoolContract.abi,
+        address: InsurancePoolContract.address as `0x${string}`,
+        functionName: 'deposit',
+        args: params,
+        value: parseUnits(amount.toString(), 18),
+      });
+      toast.success('Deposit Success!');
+    } catch (err) {
+      let errorMsg = '';
+      if (err instanceof Error) {
+        if (err.message.includes('User denied transaction signature')) {
+          errorMsg = 'User denied transaction signature';
+        }
+      }
+      toast.error(errorMsg);
+    }
+  };
 
   return (
     <>
@@ -55,12 +97,13 @@ const DepositModal = ({
             </div>
           </div>
           <div className='flex justify-center py-[27px]'>
-            <div
+            <Button
+              variant='gradient'
               className='w-fit min-w-[183px] rounded bg-gradient-to-r from-[#00ECBC] to-[#005746] px-5 py-3 text-center'
-              onClick={handleStake}
+              onClick={() => handleDepositContract(index, amount)}
             >
               Stake
-            </div>
+            </Button>
           </div>
         </div>
       </Modal>

@@ -30,8 +30,6 @@ export const PurchaseScreen = (): JSX.Element => {
     });
   }, [availableCovers, searchKeyword, filterCategory]);
 
-  console.log('filtered:', filteredCovers)
-  
   return (
     <section className='flex h-full flex-auto flex-col'>
       <div className='layout flex flex-auto flex-col items-center gap-10 p-10'>

@@ -12,7 +12,7 @@ type RequirementType = {
   slashingTx: string;
   description: string;
   error: string;
-  status: number;
+  status: number | undefined;
   setStatus: React.Dispatch<React.SetStateAction<number>>;
   maxClaimable: number;
   isSlashing: boolean;
@@ -22,6 +22,7 @@ type RequirementType = {
   handleSlashingTxChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleDescriptionChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmitClaim: () => void;
+  handleClaimProposalFunds: () => void;
 };
 
 export const Requirement = (props: RequirementType): JSX.Element => {
@@ -41,8 +42,10 @@ export const Requirement = (props: RequirementType): JSX.Element => {
     handleSlashingTxChange,
     handleDescriptionChange,
     handleSubmitClaim,
+    handleClaimProposalFunds,
   } = props;
   const [selectedType, setSelectedType] = useState<number>(0);
+  console.log('current status:', status)
 
   return (
     <div className='flex w-full flex-col gap-10'>
@@ -53,7 +56,7 @@ export const Requirement = (props: RequirementType): JSX.Element => {
           </div>
           <div className='flex w-full max-w-[300px] cursor-pointer items-center rounded-[10px] border border-white p-[2px]'>
             <div className='relative flex w-full cursor-pointer flex-col items-center rounded-lg md:flex-row md:gap-0'>
-              {['Max Claimable', '4 WBTC'].map((opt, index) => (
+              {['Max Claimable', `${maxClaimable} WBTC`].map((opt, index) => (
                 <div
                   key={index}
                   className={cn(
@@ -85,7 +88,7 @@ export const Requirement = (props: RequirementType): JSX.Element => {
             </div>
           </div>
         </div>
-        {status === 0 && (
+        {status === undefined && (
           <div className='flex flex-col gap-10'>
             <div className='flex flex-col gap-1'>
               <div>Loss Event Date</div>
@@ -149,6 +152,36 @@ export const Requirement = (props: RequirementType): JSX.Element => {
             </div>
           </div>
         )}
+        {status === 0 && (
+          <div className='flex flex-col'>
+            <div className='flex min-h-[400px] w-full flex-col items-center justify-center gap-10'>
+              <div className='flex items-center gap-4'>
+                <Image
+                  src='/images/success.png'
+                  width={80}
+                  height={80}
+                  alt='success'
+                />
+                <div className='flex flex-col'>
+                  <div>Your claim request is in voting process.</div>
+                  <div>No further action is required.</div>
+                </div>
+              </div>
+            </div>{' '}
+            <div className='flex w-full justify-center'>
+              <Button
+                variant='primary'
+                className='min-w-[400px]'
+                isLoading={isLoading}
+                size='lg'
+                onClick={handleClaimProposalFunds}
+                disabled={true}
+              >
+                Request in voting
+              </Button>
+            </div>
+          </div>
+        )}
         {status === 1 && (
           <div className='flex flex-col'>
             <div className='flex min-h-[400px] w-full flex-col items-center justify-center gap-10'>
@@ -171,8 +204,8 @@ export const Requirement = (props: RequirementType): JSX.Element => {
                 className='min-w-[400px]'
                 isLoading={isLoading}
                 size='lg'
-                onClick={() => setStatus(0)}
-                disabled={!!error}
+                onClick={handleClaimProposalFunds}
+                // disabled={!!error}
               >
                 Withdraw Claim Value
               </Button>

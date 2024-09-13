@@ -1,35 +1,18 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import {
-  cn,
-  convertAmount,
-  convertStakeTypeData,
-  convertTvl,
-} from '@/lib/utils';
+import { cn, convertStakeTypeData } from '@/lib/utils';
 import Button from '@/components/button/button';
 import LeftArrowIcon from '~/svg/left-arrow.svg';
 
-import {
-  useReadContracts,
-  useChainId,
-  useAccount,
-  useWriteContract,
-  useWaitForTransactionReceipt,
-  useBalance,
-} from 'wagmi';
-import {
-  MyStackDetail,
-  tempMyStacks,
-  StakeType,
-} from '@/screen/stake/constants';
-import { InsurancePoolContract, MockERC20Contract } from '@/constant/contracts';
+import { useAccount } from 'wagmi';
+import { MyStackDetail, StakeType } from '@/screen/stake/constants';
 import { useAllInsurancePools } from '@/hooks/contracts/pool/useAllInsurancePools';
 import DepositModal from './deposit';
-import { parseUnits } from 'viem';
-import { toast } from 'react-toastify';
 
 export type InsurancePoolType = {
   poolName: string;
+  dailyPayout: string;
+  depositAmount: string;
   apy: number;
   minPeriod: number;
   acceptedToken: string;
@@ -39,64 +22,8 @@ export type InsurancePoolType = {
 };
 
 export const StakeScreen = (): JSX.Element => {
-  const chainId = useChainId();
-
-  const { address, isConnected } = useAccount();
-  const [amount, setAmount] = useState<string>('1');
-
-  const { data: balance } = useBalance({ address });
-
-  const [myStacks, setMyStacks] = useState<StakeType[]>([]);
-
   const insurancePools = useAllInsurancePools();
-
-  const {
-    data: hash,
-    isPending,
-    writeContractAsync,
-  } = useWriteContract({
-    mutation: {
-      async onSuccess(data) {
-        console.log(1);
-      },
-      onError(error) {
-        console.log(1, error);
-      },
-    },
-  });
-
-  const handleDepositContract = async (poolId: Number, day: String) => {
-    console.log('Deposit is ', InsurancePoolContract, poolId, day);
-    const realAmount = convertAmount(amount);
-    const params = [Number(poolId), Number(day)];
-
-    console.log('params ', params);
-    console.log('Balance: ', balance, 'AMOUNT: ', realAmount);
-
-    try {
-      const tx = await writeContractAsync({
-        abi: InsurancePoolContract.abi,
-        address: InsurancePoolContract.address as `0x${string}`,
-        functionName: 'deposit',
-        args: params,
-        value: parseUnits(amount.toString(), 18),
-      });
-      toast.success('Deposit Success!');
-    } catch (err) {
-      let errorMsg = '';
-      if (err instanceof Error) {
-        if (err.message.includes('User denied transaction signature')) {
-          errorMsg = 'User denied transaction signature';
-        }
-      }
-      toast.error(errorMsg);
-    }
-  };
-
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({
-      hash,
-    });
+  const [myStacks, setMyStacks] = useState<StakeType[]>([]);
 
   useEffect(() => {
     if (insurancePools) {
@@ -137,12 +64,7 @@ export const StakeScreen = (): JSX.Element => {
                 </div>
               ))}
               <div className='flex w-full flex-col items-center gap-[15px]'>
-                <DepositModal
-                  index={index + 1}
-                  currency={stack.currency}
-                  onStake={() => handleDepositContract(index + 1, stack.tenure)}
-                />
-                {stack.tenure}
+                <DepositModal index={index + 1} currency={stack.currency} />
                 <div className='flex h-10 w-full items-center justify-center rounded bg-white px-5 py-[11px]'>
                   <Link
                     href={`/pool/${stack.currency}/${index + 1}`}

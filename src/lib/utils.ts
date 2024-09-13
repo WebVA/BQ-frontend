@@ -70,12 +70,16 @@ export const convertMyStakeTypeData = (
   const result: MyStakeType[] = [];
   for (let i = 0; i < data.length; i++) {
     const tvl = convertTvl(Number(data[i].tvl));
+    const dailyPayout = convertTvl(Number(data[i].dailyPayout));
+    const depositAmount = convertTvl(Number(data[i].depositAmount));
     result.push({
       rating: data[i].poolName,
       apy: `${data[i].apy}%`,
       currency: 'BTCP',
       tenure: `${data[i].minPeriod} days`,
-      claim: `${tvl} BTCP`,
+      dailyPayout: `${dailyPayout.toFixed(5)} BTCP`,
+      depositAmount: `${depositAmount} BTCP`,
+      // claim: `${tvl} BTCP`,
       poolId: (i + 1).toString(),
       tvl: tvl.toString(),
     });
