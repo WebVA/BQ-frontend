@@ -15,8 +15,8 @@ const Header = (): JSX.Element => {
           <NextImage
             useSkeleton
             src='/images/logo.png'
-            width={231}
-            height={51}
+            width={132}
+            height={32.55}
             alt='logo'
           />
         </Link>

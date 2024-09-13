@@ -124,7 +124,7 @@ export const MyStakeScreen = (): JSX.Element => {
                       <div
                         key={i}
                         className={cn(
-                          `flex flex-col items-center gap-[17px]`,
+                          `ml-[50px] flex flex-col items-center gap-[17px]`,
                           (key === 'poolId' ||
                             key === 'tvl' ||
                             key === 'claim' ||
@@ -135,7 +135,7 @@ export const MyStakeScreen = (): JSX.Element => {
                             'hidden'
                         )}
                       >
-                        <div className='w-[200px] gap-x-1'>
+                        <div className='ml-[30px] w-[200px] gap-x-1'>
                           <div
                             className={cn(
                               'w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'
@@ -166,7 +166,7 @@ export const MyStakeScreen = (): JSX.Element => {
                       <div
                         key={i}
                         className={cn(
-                          `flex flex-col items-center gap-[17px]`,
+                          `ml-[50px] flex flex-col items-center gap-[17px]`,
                           (key === 'poolId' ||
                             key === 'tvl' ||
                             key === 'claim' ||
@@ -177,7 +177,7 @@ export const MyStakeScreen = (): JSX.Element => {
                             'hidden'
                         )}
                       >
-                        <div className='w-[200px] gap-x-1'>
+                        <div className='ml-[30px] w-[200px] gap-x-1'>
                           <div
                             className={cn(
                               'w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'
