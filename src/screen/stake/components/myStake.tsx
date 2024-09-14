@@ -124,7 +124,7 @@ export const MyStakeScreen = (): JSX.Element => {
                       <div
                         key={i}
                         className={cn(
-                          `ml-[50px] flex flex-col items-center gap-[17px]`,
+                          `ml-[30px] flex flex-col items-center gap-[17px]`,
                           (key === 'poolId' ||
                             key === 'tvl' ||
                             key === 'claim' ||
@@ -166,7 +166,7 @@ export const MyStakeScreen = (): JSX.Element => {
                       <div
                         key={i}
                         className={cn(
-                          `ml-[50px] flex flex-col items-center gap-[17px]`,
+                          `ml-[30px] flex flex-col items-center gap-[17px]`,
                           (key === 'poolId' ||
                             key === 'tvl' ||
                             key === 'claim' ||

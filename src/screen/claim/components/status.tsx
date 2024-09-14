@@ -9,7 +9,6 @@ type StatusType = {
 const StatusText = ['Submitted', 'Pending', 'Withdraw'];
 
 export const Status: React.FC<StatusType> = ({ status }): JSX.Element => {
-  console.log('status:', status)
   const StatusStep: React.FC<{ active: boolean; text: string; position: string }> = ({ active, text, position }) => {
     return (
       <div className={`absolute ${position} top-1/2 h-6 w-6 -translate-y-1/2 -translate-x-1/2 rounded-full ${active ? 'bg-[#00ECBC]' : 'bg-[#D9D9D9]'}`}>
@@ -39,7 +38,7 @@ export const Status: React.FC<StatusType> = ({ status }): JSX.Element => {
         Claim Status
       </div>
       <div className='relative'>
-        <StatusBar step={status || 0} />
+        <StatusBar step={status || -1} />
         <StatusStep active={status ? (status >= PropsalStatus.Submitted) : false} text={StatusText[0]} position="left-1/3" />
         <StatusStep active={status ? (status >= PropsalStatus.Pending) : false} text={StatusText[1]} position="left-2/3" />
         <StatusStep active={status === PropsalStatus.Executed} text={StatusText[2]} position="left-full" />

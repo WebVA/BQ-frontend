@@ -41,7 +41,7 @@ export const Overview = (props: OverViewProps): JSX.Element => {
   return (
     <div className='flex flex-col gap-4'>
       <div className='border-border-100 w-fit min-w-[200px] border-b-[0.5px] pb-2 text-[20px] font-bold'>
-        Cover Details
+        Cover Overview
       </div>
       <div className='relative flex flex-col gap-4 rounded border border-white/10 bg-[#373737] px-12 py-[34px]'>
         <div className='flex flex-col gap-4'>

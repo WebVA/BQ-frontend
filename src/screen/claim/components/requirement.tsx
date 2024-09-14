@@ -45,7 +45,6 @@ export const Requirement = (props: RequirementType): JSX.Element => {
     handleClaimProposalFunds,
   } = props;
   const [selectedType, setSelectedType] = useState<number>(0);
-  console.log('current status:', status)
 
   return (
     <div className='flex w-full flex-col gap-10'>
@@ -62,7 +61,7 @@ export const Requirement = (props: RequirementType): JSX.Element => {
                   className={cn(
                     'z-10 w-full py-2 text-center text-base capitalize text-white transition-all'
                   )}
-                  onClick={() => setSelectedType(index)}
+                  // onClick={() => setSelectedType(index)}
                 >
                   {opt}
                 </div>
