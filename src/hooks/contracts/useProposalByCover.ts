@@ -3,7 +3,7 @@ import { GovContract } from "@/constant/contracts";
 import { useBlockNumber, useReadContract } from 'wagmi';
 import { ICover, ProposalType } from "@/types/main";
 
-export const useProposalByCoverId = (coverId?: string) => {
+export const useProposalByCoverId = (address: string, coverId?: string) => {
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const { data: proposals, refetch } = useReadContract({
     abi: GovContract.abi,
@@ -19,7 +19,7 @@ export const useProposalByCoverId = (coverId?: string) => {
       const result = proposals as ProposalType[];
       if (coverId) {
         const filtered = result.find(proposal => {
-          return Number(proposal.proposalParam.coverId).toString() === coverId;
+          return (Number(proposal.proposalParam.coverId).toString() === coverId) && (proposal.proposalParam.user === address);
         });
         setFilteredProposals(filtered);
       } else {

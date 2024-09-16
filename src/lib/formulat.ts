@@ -2,8 +2,8 @@ import { COVER_FEE_RATE } from "@/constant/config";
 import { formatUnits, parseUnits } from "viem";
 import { RiskType, riskTypeNames } from "@/types/main";
 
-export const calculateCoverFee = (coverAmount: number, coverPeriod: number) => {
-  return coverAmount * COVER_FEE_RATE * coverPeriod / 365;
+export const calculateCoverFee = (coverAmount: number, annualRate: number, coverPeriod: number) => {
+  return coverAmount * annualRate * coverPeriod / (365 * 100);
 }
 
 
@@ -19,7 +19,7 @@ export function bnToNumber(value: bigint | undefined, decimals: number = 18) {
 
 
 export function UNIXToDate(timestamp: bigint) {
-  return new Date(Number(timestamp) * 1000); 
+  return new Date(Number(timestamp) * 1000);
 }
 
 

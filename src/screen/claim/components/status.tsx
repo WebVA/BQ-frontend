@@ -1,14 +1,15 @@
 import React from 'react';
 import Button from '@/components/button/button';
-import { PropsalStatus } from '@/types/main';
+import { ProposalStatus } from '@/types/main';
 
 type StatusType = {
-  status: PropsalStatus | undefined;
+  status: ProposalStatus | undefined;
 };
 
-const StatusText = ['Submitted', 'Pending', 'Withdraw'];
+const StatusText = ['Submitted', 'Pending', 'Approved', 'Withdrawn'];
 
 export const Status: React.FC<StatusType> = ({ status }): JSX.Element => {
+  console.log('proposal status:', status)
   const StatusStep: React.FC<{ active: boolean; text: string; position: string }> = ({ active, text, position }) => {
     return (
       <div className={`absolute ${position} top-1/2 h-6 w-6 -translate-y-1/2 -translate-x-1/2 rounded-full ${active ? 'bg-[#00ECBC]' : 'bg-[#D9D9D9]'}`}>
@@ -20,7 +21,7 @@ export const Status: React.FC<StatusType> = ({ status }): JSX.Element => {
   };
 
   const StatusBar: React.FC<{ step: number }> = ({ step }) => {
-    const widthPercentage = ((step + 1) * 100) / 3;
+    const widthPercentage = ((step + 1) * 100) / 4;
     return (
       <>
         <div className='h-[13px] w-full rounded-full bg-[#D9D9D9]'></div>
@@ -38,10 +39,11 @@ export const Status: React.FC<StatusType> = ({ status }): JSX.Element => {
         Claim Status
       </div>
       <div className='relative'>
-        <StatusBar step={status || -1} />
-        <StatusStep active={status ? (status >= PropsalStatus.Submitted) : false} text={StatusText[0]} position="left-1/3" />
-        <StatusStep active={status ? (status >= PropsalStatus.Pending) : false} text={StatusText[1]} position="left-2/3" />
-        <StatusStep active={status === PropsalStatus.Executed} text={StatusText[2]} position="left-full" />
+        <StatusBar step={status !== undefined ? status : -1} />
+        <StatusStep active={status !== undefined ? (status >= ProposalStatus.Submitted) : false} text={StatusText[0]} position="left-1/4" />
+        <StatusStep active={status !== undefined  ? (status >= ProposalStatus.Pending) : false} text={StatusText[1]} position="left-2/4" />
+        <StatusStep active={status !== undefined  ? (status >= ProposalStatus.Approved) : false} text={StatusText[2]} position="left-3/4" />
+        <StatusStep active={status === ProposalStatus.Claimed} text={StatusText[3]} position="left-full" />
       </div>
       {/* Uncomment to render buttons for each status */}
       {/* {StatusText.map((text, index) => (

@@ -11,7 +11,7 @@ import { useProposalByCoverId } from '@/hooks/contracts/useProposalByCover';
 
 import { Switch } from '@/components/switch';
 
-import { GovContract } from '@/constant/contracts';
+import { GovContract, InsurancePoolContract as IPoolContract } from '@/constant/contracts';
 import { Covers } from '@/screen/claim/components/covers';
 import { Requirement } from '@/screen/claim/components/requirement';
 import { Status } from '@/screen/claim/components/status';
@@ -36,7 +36,7 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
     return currentCover?.coverId ? Number(currentCover?.coverId) : 0;
   }, [currentCover?.coverId]);
 
-  const proposal = useProposalByCoverId(currentCoverId.toString());
+  const proposal = useProposalByCoverId(address as string, currentCoverId.toString());
 
   const userCovers = useAllUserCovers(address as string);
 
@@ -49,6 +49,7 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
         isSelected = true;
         setCurrentCover(cover); // Set the matching cover
         foundMatch = true;
+        setSelectedTab(index);
       }
       return {
         name: cover?.coverName || '',
@@ -75,6 +76,8 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
   const maxClaimableNum = useMemo(() => {
     return parseFloat(bnToNumber(currentCover?.coverValue));
   }, [currentCover?.coverValue]);
+
+  console.log('proposal:', proposal);
 
   // useAllProposals();
 
@@ -159,8 +162,41 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
     setSelectedTab(index)
   }
 
-  const handleClaimProposalFunds = () => {
+  const handleClaimProposalFunds = async () => {
+    if (!proposal) return;
+    setIsLoading(true);
+    // setStatus(0);
+    const params = [
+      proposal.id
+    ];
 
+    try {
+      await writeContract(config, {
+        abi: IPoolContract.abi,
+        address: IPoolContract.address as `0x${string}`,
+        functionName: 'claimProposalFunds',
+        args: params,
+      });
+
+      // setStatus(1);
+      toast.success('Withdrawal submitted!');
+    } catch (err) {
+      let errorMsg = '';
+      if (err instanceof Error) {
+        if (err.message.includes('User denied transaction signature')) {
+          errorMsg = 'User denied transaction signature';
+        } else {
+          errorMsg = 'Failed to submit proposal';
+        }
+      } else {
+        errorMsg = 'Unexpected error';
+      }
+
+      // setStatus(2);
+      toast.error(errorMsg);
+    }
+
+    setIsLoading(false);
   }
 
   if (products.length === 0) {
@@ -179,8 +215,7 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
               className="min-w-[180px]"
               isLoading={isLoading}
               size='lg'
-              onClick={() => handleSubmitClaim()}
-              disabled={!!error}
+              onClick={() => { router.push('/purchase') }}
             >
               Buy Covers
             </Button>
@@ -189,8 +224,7 @@ export const ClaimScreen: React.FC<ClaimScreenType> = (props): JSX.Element => {
               className="min-w-[180px]"
               isLoading={isLoading}
               size='lg'
-              onClick={() => handleSubmitClaim()}
-              disabled={!!error}
+              onClick={() => window.open('https://discord.com/invite/wrFmetGCa7')}
             >
               Contact Us
             </Button>

@@ -35,7 +35,7 @@ export const HomeScreen = (): JSX.Element => {
           <Button
             variant='primary'
             size='lg'
-            className='min-w-[216px] rounded-sm bg-gradient-to-r from-[#00ECBC] to-[#005746]'
+            className='z-50 min-w-[216px] rounded-sm bg-gradient-to-r from-[#00ECBC] to-[#005746]'
             onClick={async () => (isConnected ? handleDisconnect() : open())}
           >
             {isConnected ? 'Disconnect' : 'Connect Wallet'}

@@ -80,7 +80,7 @@ export type ProposalType = {
   votesAgainst: number;
   createdAt: number;
   deadline: number;
-  status: PropsalStatus;
+  status: ProposalStatus;
   executed: boolean;
   proposalParam: {
     user: string;
@@ -116,9 +116,10 @@ export type PoolCoverType = {
   CID: string;
 };
 
-export enum PropsalStatus {
+export enum ProposalStatus {
   Submitted,
   Pending,
-  Executed,
+  Approved,
+  Claimed,
   Rejected,
 }

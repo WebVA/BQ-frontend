@@ -5,6 +5,8 @@ import Button from '@/components/button/button';
 import CustomDatePicker from '@/components/DatePicker';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { ProposalStatus } from "@/types/main";
+import { Proposals } from "@/screen/governance/components/proposals";
 
 type RequirementType = {
   lossEventDate: Date | null;
@@ -12,7 +14,7 @@ type RequirementType = {
   slashingTx: string;
   description: string;
   error: string;
-  status: number | undefined;
+  status: ProposalStatus | undefined;
   setStatus: React.Dispatch<React.SetStateAction<number>>;
   maxClaimable: number;
   isSlashing: boolean;
@@ -87,7 +89,7 @@ export const Requirement = (props: RequirementType): JSX.Element => {
             </div>
           </div>
         </div>
-        {status === undefined && (
+        {status === undefined && (  // Submit not reuqested yet
           <div className='flex flex-col gap-10'>
             <div className='flex flex-col gap-1'>
               <div>Loss Event Date</div>
@@ -151,7 +153,7 @@ export const Requirement = (props: RequirementType): JSX.Element => {
             </div>
           </div>
         )}
-        {status === 0 && (
+        {(status === ProposalStatus.Submitted || status === ProposalStatus.Pending) && (
           <div className='flex flex-col'>
             <div className='flex min-h-[400px] w-full flex-col items-center justify-center gap-10'>
               <div className='flex items-center gap-4'>
@@ -181,7 +183,7 @@ export const Requirement = (props: RequirementType): JSX.Element => {
             </div>
           </div>
         )}
-        {status === 1 && (
+        {status === ProposalStatus.Approved && (
           <div className='flex flex-col'>
             <div className='flex min-h-[400px] w-full flex-col items-center justify-center gap-10'>
               <div className='flex items-center gap-4'>
@@ -211,7 +213,7 @@ export const Requirement = (props: RequirementType): JSX.Element => {
             </div>
           </div>
         )}
-        {status === 2 && (
+        {status === ProposalStatus.Rejected && (
           <div className='flex flex-col'>
             <div className='flex min-h-[400px] w-full flex-col items-center justify-center gap-10'>
               <div className='flex items-center gap-4'>

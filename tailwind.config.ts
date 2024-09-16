@@ -15,6 +15,11 @@ export default {
           200: 'rgb(var(--tw-color-primary-200) / <alpha-value>)',
           300: 'rgb(var(--tw-color-primary-300) / <alpha-value>)',
         },
+        gray: {
+          100: 'rgb(var(--tw-color-gray-100) / <alpha-value>)',
+          200: 'rgb(var(--tw-color-gray-200) / <alpha-value>)',
+          300: 'rgb(var(--tw-color-gray-300) / <alpha-value>)',
+        },
         border: {
           100: 'rgb(var(--tw-color-white-100) / 0.4)',
           200: 'rgb(var(--tw-color-white-100) / 0.15)',

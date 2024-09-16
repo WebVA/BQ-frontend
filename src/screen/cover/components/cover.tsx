@@ -34,8 +34,8 @@ export const CoverScreen = ({ id }: { id: number }): JSX.Element => {
     CoverDueTo.NoneSelected
   );
   const coverFee = useMemo(
-    () => calculateCoverFee(parseFloat(coverAmount), coverPeriod),
-    [coverAmount, coverPeriod]
+    () => calculateCoverFee(parseFloat(coverAmount), Number(selectedCover?.cost) || 0, coverPeriod),
+    [coverAmount, coverPeriod, selectedCover?.cost]
   );
   const { data: balanceData } = useBalance({
     address: address as `0x${string}`,

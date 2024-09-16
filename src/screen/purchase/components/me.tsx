@@ -14,8 +14,6 @@ export const MyPurchaseScreen = (): JSX.Element => {
   const { address } = useAccount();
   const userCovers = useAllUserCovers(address as string);
 
-  console.log('user covers:', userCovers);
-
   return (
     <section className='flex h-full flex-auto flex-col'>
       <div className='layout flex flex-auto flex-col items-center gap-10 p-10'>
@@ -28,6 +26,13 @@ export const MyPurchaseScreen = (): JSX.Element => {
           </div>
           <div className='text-[24px] font-bold leading-[50px]'>My Cover</div>
         </div>
+        {userCovers.length === 0 && (
+          <div className='mx-auto w-full max-w-[1000px] py-[54px]'>
+            <div className="mt-[14px] text-center text-[30px]">
+              No User Cover
+            </div>
+          </div>
+        )}
         <div className='grid w-full grid-cols-3 gap-[38px]'>
           {userCovers.map((userCover, index) => (
             <MyCover key={index} {...userCover} />
