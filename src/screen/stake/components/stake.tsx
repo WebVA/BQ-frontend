@@ -64,7 +64,11 @@ export const StakeScreen = (): JSX.Element => {
                 </div>
               ))}
               <div className='flex w-full flex-col items-center gap-[15px]'>
-                <DepositModal index={index + 1} currency={stack.currency} />
+                <DepositModal
+                  index={index + 1}
+                  currency={stack.currency}
+                  tenure={stack.tenure}
+                />
                 <div className='flex h-10 w-full items-center justify-center rounded bg-white px-5 py-[11px]'>
                   <Link
                     href={`/pool/${stack.currency}/${index + 1}`}

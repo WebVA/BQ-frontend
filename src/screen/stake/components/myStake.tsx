@@ -9,7 +9,6 @@ import {
 
 import { cn, convertMyStakeTypeData } from '@/lib/utils';
 import { useAllInsurancePoolsByAddress } from '@/hooks/contracts/pool/useAllInsurancePoolsByAddress';
-import { useGetUserDeposit } from '@/hooks/contracts/pool/useGetUserDeposit';
 
 import Button from '@/components/button/button';
 
@@ -21,7 +20,6 @@ import { InsurancePoolType } from '@/types/main';
 import LeftArrowIcon from '~/svg/left-arrow.svg';
 
 export const MyStakeScreen = (): JSX.Element => {
-  const chainId = useChainId();
   const { address, isConnected } = useAccount();
   const [myStacks, setMyStacks] = useState<MyStakeType[]>([]);
   const pools = useAllInsurancePoolsByAddress(`${address}`);
@@ -124,7 +122,7 @@ export const MyStakeScreen = (): JSX.Element => {
                       <div
                         key={i}
                         className={cn(
-                          `ml-[30px] flex flex-col items-center gap-[17px]`,
+                          `flex flex-col items-center gap-[17px]`,
                           (key === 'poolId' ||
                             key === 'tvl' ||
                             key === 'claim' ||
@@ -135,7 +133,7 @@ export const MyStakeScreen = (): JSX.Element => {
                             'hidden'
                         )}
                       >
-                        <div className='ml-[30px] w-[200px] gap-x-1'>
+                        <div className='w-[200px] gap-x-1'>
                           <div
                             className={cn(
                               'w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'
@@ -166,7 +164,7 @@ export const MyStakeScreen = (): JSX.Element => {
                       <div
                         key={i}
                         className={cn(
-                          `ml-[30px] flex flex-col items-center gap-[17px]`,
+                          `flex flex-col items-center gap-[17px]`,
                           (key === 'poolId' ||
                             key === 'tvl' ||
                             key === 'claim' ||
@@ -177,7 +175,7 @@ export const MyStakeScreen = (): JSX.Element => {
                             'hidden'
                         )}
                       >
-                        <div className='ml-[30px] w-[200px] gap-x-1'>
+                        <div className='w-[200px] gap-x-1'>
                           <div
                             className={cn(
                               'w-[200px] rounded border border-white/5 bg-white/10 px-[18px] py-[9px] text-center'

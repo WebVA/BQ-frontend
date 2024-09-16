@@ -14,12 +14,14 @@ import { parseUnits } from 'viem';
 const DepositModal = ({
   index,
   currency,
+  tenure,
 }: {
   index: number;
   currency: string;
+  tenure: string;
 }): JSX.Element => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [amount, setAmount] = useState<string>('');
+  const [amount, setAmount] = useState<string | undefined>('');
   const { address, isConnected } = useAccount();
   const { data: balanceData } = useBalance({
     address: address as `0x${string}`,
@@ -37,7 +39,11 @@ const DepositModal = ({
     },
   });
 
-  const handleDepositContract = async (poolId: Number, amount: string) => {
+  const handleDepositContract = async (
+    poolId: Number,
+    amount: string | undefined
+  ) => {
+    if (amount === undefined) return;
     console.log('Deposit is ', InsurancePoolContract, poolId);
     const realAmount = convertAmount(amount);
     // const period = day.match(/\d+/);
@@ -88,12 +94,15 @@ const DepositModal = ({
                 value={amount || ''}
                 onChange={(e) => setAmount(e.target.value)}
               />
-              <div className='h-[36px] min-w-[86px] rounded-[10px] bg-[#131313] px-[13px] py-[6px] text-center text-[15px] leading-[24px] text-white'>
+              <div
+                className='h-[36px] min-w-[86px] cursor-pointer rounded-[10px] bg-[#131313] px-[13px] py-[6px] text-center text-[15px] leading-[24px] text-white'
+                onClick={() => setAmount(balanceData?.formatted)}
+              >
                 Max
               </div>
             </div>
             <div className='w-fit rounded border border-white/5 bg-white/10 px-[18px] py-[9px]'>
-              Tenure Period
+              Tenure Period: {tenure}
             </div>
           </div>
           <div className='flex justify-center py-[27px]'>
