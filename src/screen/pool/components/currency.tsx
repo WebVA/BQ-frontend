@@ -20,7 +20,7 @@ type CurrencyProps = {
 };
 
 export const Currency = ({ pool }: CurrencyProps): JSX.Element => {
-  const [amount, setAmount] = useState<string>('');
+  const [amount, setAmount] = useState<string | undefined>('');
   const [period, setPeriod] = useState<number>(30);
   const { open, close } = useWeb3Modal();
 
@@ -42,13 +42,21 @@ export const Currency = ({ pool }: CurrencyProps): JSX.Element => {
     },
   });
 
-  const handleDepositContract = async (poolId: string) => {
+  const handleDepositContract = async (
+    poolId: string,
+    amount: string | undefined
+  ) => {
     console.log('Deposit is ', InsurancePoolContract, BigInt(poolId));
     const realAmount = convertAmount(amount);
     const params = [Number(poolId)];
 
     console.log('params ', params);
     console.log('Balance: ', balance, 'AMOUNT: ', realAmount);
+
+    if (amount === undefined) {
+      toast.error('Amount should be bigger than 0!');
+      return;
+    }
 
     try {
       const tx = await writeContractAsync({
@@ -93,12 +101,15 @@ export const Currency = ({ pool }: CurrencyProps): JSX.Element => {
             value={amount || ''}
             onChange={(e) => setAmount(e.target.value)}
           />
-          <div className='h-[36px] min-w-[86px] rounded-[10px] bg-[#131313] px-[13px] py-[6px] text-center text-[15px] leading-[24px] text-white'>
+          <div
+            className='h-[36px] min-w-[86px] cursor-pointer rounded-[10px] bg-[#131313] px-[13px] py-[6px] text-center text-[15px] leading-[24px] text-white'
+            onClick={() => setAmount(balance?.formatted)}
+          >
             Max
           </div>
         </div>
         <div className='w-fit rounded border border-white/5 bg-white/10 px-[18px] py-[9px]'>
-          Tenure Period
+          Tenure Period: {pool?.tenure}
         </div>
       </div>
       <div className='flex justify-center py-[27px]'>
@@ -107,7 +118,10 @@ export const Currency = ({ pool }: CurrencyProps): JSX.Element => {
           className='w-fit min-w-[183px] rounded bg-gradient-to-r from-[#00ECBC] to-[#005746] px-5 py-3 text-center'
           onClick={async () =>
             isConnected
-              ? await handleDepositContract(pool?.poolId ? pool?.poolId : '1')
+              ? await handleDepositContract(
+                  pool?.poolId ? pool?.poolId : '1',
+                  amount
+                )
               : open()
           }
         >

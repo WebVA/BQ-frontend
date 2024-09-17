@@ -25,7 +25,7 @@ export const convertTvl = (amount: number) => {
   return amount / 10 ** 18;
 };
 
-export const convertAmount = (amount: string): string => {
+export const convertAmount = (amount: string | undefined): string => {
   const num = Number(amount) * 10 ** 8;
   return num.toString() + '0000000000';
 };
@@ -54,10 +54,15 @@ export const convertTempProposalTypeData = (
   const result: any[] = [];
   for (let i = 0; i < data.length; i++) {
     const tvl = convertTvl(Number(data[i].proposalParam.claimAmount));
+    const timestamp = Date.now();
+    const deadline = Number(data[i].deadline) - timestamp;
+    console.log(data[i].deadline, timestamp);
+    console.log(deadline);
     result.push({
       type: `${riskTypes[Number(data[i].proposalParam.riskType)]?.toString()}`,
       incentive: `${tvl} BQ`,
       value: `${tvl} BTCP`,
+      deadline: `${data[i].deadline}`,
     });
   }
   return result;

@@ -43,7 +43,6 @@ const DepositModal = ({
     poolId: Number,
     amount: string | undefined
   ) => {
-    if (amount === undefined) return;
     console.log('Deposit is ', InsurancePoolContract, poolId);
     const realAmount = convertAmount(amount);
     // const period = day.match(/\d+/);
@@ -51,6 +50,10 @@ const DepositModal = ({
 
     console.log('params ', params);
 
+    if (amount === undefined) {
+      toast.error('Amount should be bigger than 0!');
+      return;
+    }
     try {
       const tx = await writeContractAsync({
         abi: InsurancePoolContract.abi,

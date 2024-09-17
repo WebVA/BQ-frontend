@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useAllLiveProposals } from '@/hooks/contracts/governance/useAllLiveProposals';
 
@@ -22,7 +22,6 @@ import { addTokenToMetaMask } from '@/hooks/global';
 
 export const GovernanceScreen = (): JSX.Element => {
   const liveProposals = useAllLiveProposals();
-  const [proposals] = useState<ProposalType[]>(liveProposals);
   const [selectedType, setSelectedType] = useState<number>(0);
 
   const { address, isConnected } = useAccount();
@@ -111,11 +110,11 @@ export const GovernanceScreen = (): JSX.Element => {
           <div className='flex w-full justify-between gap-[90px]'>
             <SwitchProposal
               selectedType={selectedType}
-              onSelectProposalType={(index) => setSelectedType(index)}
+              onSelectProposalType={setSelectedType}
             />
           </div>
         </div>
-        <Proposals proposals={proposals} />
+        <Proposals proposals={liveProposals} selectedType={selectedType} />
       </div>
     </section>
   );

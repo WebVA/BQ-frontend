@@ -54,7 +54,7 @@ export const PoolScreen = ({
           <div className='flex w-full items-center justify-center'>
             <div className='flex w-full flex-col items-center gap-6'>
               <div className='p-10'>
-                <PieRadius />
+                <PieRadius pool={pool} />
               </div>
               <div className='relative flex w-full flex-col gap-4 rounded border border-white/10 bg-[#373737] px-12 py-[34px]'>
                 <div className='grid w-full grid-cols-2 justify-between gap-[50px]'>

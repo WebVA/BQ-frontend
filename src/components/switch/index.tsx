@@ -23,16 +23,20 @@ export const Switch = ({ options, value = 0, handleSwitch }: Props) => {
       newLeft = (options.length * 320 - wrapperWidth) * -1;
     }
 
-    setLeft(newLeft)
-  }
+    setLeft(newLeft);
+  };
 
   return (
     <>
-      <div className='bg-background-300 flex w-full cursor-pointer items-center rounded-[10px] p-1 overflow-hidden' ref={wrapperRef}>
-        <div className='relative flex wrap cursor-pointer flex-col items-center rounded-lg md:flex-row md:gap-0'
-        style={{
-          transform: `translateX(${left}px)`
-        }}
+      <div
+        className='bg-background-300 flex w-fit cursor-pointer items-center overflow-hidden rounded-[10px] p-1 '
+        ref={wrapperRef}
+      >
+        <div
+          className='wrap relative flex cursor-pointer flex-col items-center rounded-lg md:flex-row md:gap-0'
+          style={{
+            transform: `translateX(${left}px)`,
+          }}
         >
           {options.map((opt, index) => (
             <div
@@ -66,14 +70,18 @@ export const Switch = ({ options, value = 0, handleSwitch }: Props) => {
           />
         </div>
       </div>
-      <div className="w-full flex justify-end my-[10px]">
+      <div className='my-[10px] flex w-full justify-end'>
         <div className='flex items-center gap-8'>
-          <div onClick={() => handleArrowClick(1)}
-            className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-full border border-white bg-transparent hover:bg-white/30 active:scale-95'>
+          <div
+            onClick={() => handleArrowClick(1)}
+            className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-full border border-white bg-transparent hover:bg-white/30 active:scale-95'
+          >
             <LeftArrowIcon className='h-[13px] w-[23px]' />
           </div>
-          <div onClick={() => handleArrowClick(-1)}
-            className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-full border border-white bg-transparent hover:bg-white/30 active:scale-95'>
+          <div
+            onClick={() => handleArrowClick(-1)}
+            className='flex h-[42px] w-[42px] cursor-pointer items-center justify-center rounded-full border border-white bg-transparent hover:bg-white/30 active:scale-95'
+          >
             <LeftArrowIcon className='h-[13px] w-[23px] rotate-180' />
           </div>
         </div>

@@ -12,6 +12,8 @@ import {
   PieSeries,
 } from '@syncfusion/ej2-react-charts';
 import * as React from 'react';
+import { StakeType } from '@/screen/stake/constants';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const data1: any[] = [
   { x: 'Somalia', y: 1057022, r: '160', text: 'Somalia' },
@@ -34,7 +36,12 @@ export const data1: any[] = [
     text: 'Merlin',
   },
 ];
-const PieRadius = () => {
+
+type DetailProps = {
+  pool: StakeType | undefined;
+};
+
+const PieRadius = ({ pool }: DetailProps): JSX.Element => {
   const palettes = ['#B09FFF', '#007ADF', '#00ECBC', '#373737'];
 
   return (
@@ -45,7 +52,7 @@ const PieRadius = () => {
             <div className='flex h-full w-full items-center justify-center rounded-full bg-white'>
               <div className='flex flex-col items-center justify-center text-black'>
                 <div className='text-3xl font-bold'>WBTC</div>
-                <div className='text-3xl font-bold'>50</div>
+                <div className='text-3xl font-bold'>{pool?.tvl} BTCP</div>
                 <div>Total</div>
               </div>
             </div>

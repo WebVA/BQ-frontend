@@ -14,15 +14,20 @@ import { ProposalType } from '@/types/main';
 import DownIcon from '~/svg/chav-down.svg';
 
 type CurrencyProps = {
-  proposals: ProposalType[] | undefined;
+  proposals: ProposalType[];
+  selectedType: number;
 };
 
-export const Proposals = ({ proposals }: CurrencyProps): JSX.Element => {
+export const Proposals = ({
+  proposals,
+  selectedType,
+}: CurrencyProps): JSX.Element => {
   const { address, isConnected } = useAccount();
   const { data: balance } = useBalance({ address });
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [lossEventDate, setLossEventDate] = useState<Date>(new Date());
+  console.log('selectedType: ', selectedType);
 
   const {
     data: hash,
@@ -94,9 +99,10 @@ export const Proposals = ({ proposals }: CurrencyProps): JSX.Element => {
 
   return (
     <div className='flex w-full flex-col gap-6'>
-      {convertTempProposalTypeData(proposals ? proposals : []).map(
-        (proposal, index) => (
-          <div className='flex flex-col'>
+      {convertTempProposalTypeData(proposals ? proposals : [])
+        .filter((proposal, index) => proposals[index].status === selectedType)
+        .map((proposal, index) => (
+          <div key={proposals[index].id} className='flex flex-col'>
             <div
               key={index}
               className='flex w-full gap-5 rounded bg-[#1E1E1E] px-11 py-[26px]'
@@ -162,6 +168,7 @@ export const Proposals = ({ proposals }: CurrencyProps): JSX.Element => {
                           <input
                             className='flex-1 border-none bg-transparent p-0 focus:border-none focus:outline-none focus:outline-offset-0 focus:ring-0'
                             placeholder='Type here...'
+                            defaultValue={proposal.value}
                           />
                         </div>
                       </div>
@@ -183,6 +190,9 @@ export const Proposals = ({ proposals }: CurrencyProps): JSX.Element => {
                         <input
                           className='border-none bg-transparent p-0 focus:border-none focus:outline-none focus:outline-offset-0 focus:ring-0'
                           placeholder='Type here...'
+                          defaultValue={
+                            proposals[index].proposalParam.description
+                          }
                         />
                       </div>
                     </div>
@@ -202,8 +212,7 @@ export const Proposals = ({ proposals }: CurrencyProps): JSX.Element => {
               </div>
             </div>
           </div>
-        )
-      )}
+        ))}
     </div>
   );
 };
