@@ -1,13 +1,17 @@
-import React, { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import React, { ChangeEvent, ChangeEventHandler, useCallback, useMemo, useState } from 'react';
 
 import Dropdown from '@/components/dropdown';
 import Input from '@/components/input';
 import { Slider } from '@/components/slider';
 
 import ArrowIcon from '~/svg/arrow.svg';
-import { CoverDueTo } from '@/types/main';
+import { CoverDueTo, RiskType } from '@/types/main';
 import { MAX_COVER_PERIOD, MIN_COVER_PERIOD } from '@/constant/config';
 import { cn } from '@/lib/utils';
+import { TiInfoLarge } from "react-icons/ti";
+import { Tooltip } from 'react-tooltip'
+import { termsByRiskType } from "@/lib/formulat";
+import { useCall } from "wagmi";
 
 type DetailProps = {
   id: number;
@@ -17,6 +21,7 @@ type DetailProps = {
   handleCoverPeriodChange: (val: number) => void;
   dueTo: CoverDueTo;
   maxCoverAmount: string;
+  riskType: RiskType | undefined;
 };
 
 export const Detail = (props: DetailProps): JSX.Element => {
@@ -26,22 +31,42 @@ export const Detail = (props: DetailProps): JSX.Element => {
     coverPeriod,
     dueTo,
     maxCoverAmount,
+    riskType,
     handleCoverAmountChange,
     handleCoverPeriodChange,
   } = props;
 
   const [period, setPeriod] = useState<number>(30);
   const [selectedToken, setSelectedToken] = useState<number>(0);
+  const terms = useMemo(() => termsByRiskType(riskType), [riskType]);
 
   return (
     <div className='flex flex-col gap-4'>
-      <div className='border-border-100 w-fit min-w-[200px] border-b-[0.5px] pb-2 text-[20px] font-bold'>
-        Cover Details
+      <Tooltip id="tooltip-terms">
+        <div className="w-[350px] py-[8px] px-[16px]">
+          <h5 className="text-[14px] font-[600]">
+            {terms.title}
+          </h5>
+          <ul className="text-[11px] list-disc pl-[20px]">
+            {terms.content.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      </Tooltip>
+      <div className="flex relative items-center justify-between">
+        <div className='border-border-100 w-fit min-w-[200px] border-b-[0.5px] pb-2 text-[20px] font-bold'>
+          Cover Details
+        </div>
+
+        <div className='flex items-center justify-center rounded border border-[#363636] bg-[#292929] p-3 text-[14px] items-center gap-[8px] my-[4px]' data-tooltip-id="tooltip-terms">
+          <div className="">Terms & Conditions</div>
+          <div className="p-[5px] bg-[#3a3a3a] border border-[#363636] rounded">
+            <TiInfoLarge />
+          </div>
+        </div>
       </div>
       <div className='relative flex flex-col gap-4 rounded border border-white/10 bg-[#373737] px-12 py-[34px]'>
-        <div className='absolute right-0 top-0 flex h-[23px] w-[23px] items-center justify-center rounded border border-[#5B5B5B] bg-gradient-to-r from-[#3D3D3D] to-[#303030] p-3 text-[8px]'>
-          i
-        </div>
         <div className='flex flex-col gap-[13px] rounded-[15px]'>
           <div className='flex items-center justify-between'>
             <div className='flex gap-[10px]'>

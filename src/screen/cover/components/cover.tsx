@@ -135,6 +135,7 @@ export const CoverScreen = ({ id }: { id: number }): JSX.Element => {
               handleCoverPeriodChange={handleCoverPeriodChange}
               dueTo={coverDueTo}
               maxCoverAmount={bnToNumber(selectedCover?.maxAmount)}
+              riskType={selectedCover?.riskType}
             />
             <Overview
               productName={selectedCover?.coverName || ''}
@@ -148,7 +149,7 @@ export const CoverScreen = ({ id }: { id: number }): JSX.Element => {
               isLoading={isLoading}
             />
           </div>
-          <Explore />
+          <Explore riskType={selectedCover?.riskType} />
         </div>
       </div>
     </section>

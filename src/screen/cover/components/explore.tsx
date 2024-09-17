@@ -1,13 +1,57 @@
-import React from 'react';
+import { useAllAvailableCovers } from "@/hooks/contracts/useAllAvailableCovers";
+import { bnToNumber, getRiskTypeName } from "@/lib/formulat";
+import { RiskType } from "@/types/main";
+import React, { useMemo } from 'react';
 
-export const Explore = (): JSX.Element => {
+type ExploreType = {
+  riskType: RiskType | undefined;
+}
+
+export const Explore: React.FC<ExploreType> = ({ riskType }): JSX.Element => {
+  const availableCovers = useAllAvailableCovers();
+
+  const moreCovers = useMemo(() => {
+    if (riskType === undefined) return;
+
+    return availableCovers.filter((cover) => cover.riskType === riskType);
+  }, [
+    availableCovers,
+    riskType
+  ])
+
+  console.log("moreCovers", moreCovers)
+
   return (
     <div className='flex min-w-[210px] flex-col gap-4 rounded-sm border border-white/10 bg-[#1E1E1E] px-8 py-[23px]'>
       <div className='border-border-100 w-fit min-w-[200px] border-b-[0.5px] pb-2 text-[20px] font-bold'>
         Explore More Covers
       </div>
 
-      <div className='relative flex flex-col gap-[33px] rounded bg-[#373737] px-12 py-[34px]'>
+      {moreCovers && moreCovers.slice(0, 3).map((cover, index) => {
+        return (
+          <div className='relative flex flex-col gap-[33px] rounded bg-[#373737] px-12 py-[34px]' key={index}>
+            <div className='flex items-center gap-[14px]'>
+              <div className='h-[47px] w-[47px] rounded-full bg-white'></div>
+              <div className='flex flex-col gap-[5px]'>
+                <div className='text-[18px] font-bold text-white'>{cover.coverName}</div>
+                <div className='text-[#AFAFAF]'>{getRiskTypeName(cover.riskType)}</div>
+              </div>
+            </div>
+            <div className='flex flex-col gap-4'>
+              <div className='flex items-center justify-between'>
+                <div>Annual Cost</div>
+                <div className='font-bold'>{Number(cover.cost)}</div>
+              </div>
+              <div className='flex items-center justify-between'>
+                <div>Max Capacity</div>
+                <div className='font-bold'>{bnToNumber(cover.maxAmount || 0n)}</div>
+              </div>
+            </div>
+          </div>
+        )
+      })}
+
+      {/* <div className='relative flex flex-col gap-[33px] rounded bg-[#373737] px-12 py-[34px]'>
         <div className='flex items-center gap-[14px]'>
           <div className='h-[47px] w-[47px] rounded-full bg-white'></div>
           <div className='flex flex-col gap-[5px]'>
@@ -63,7 +107,7 @@ export const Explore = (): JSX.Element => {
             <div className='font-bold'>12.12.2024</div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className='mt-5 flex w-full justify-center'>
         <div className='flex w-[180px] justify-center rounded border border-white py-[10px] text-center'>
